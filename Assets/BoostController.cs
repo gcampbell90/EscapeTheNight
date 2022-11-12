@@ -14,7 +14,7 @@ public class BoostController : MonoBehaviour
     public bool IsBoosting { get; set; }
 
 
-    private void Awake()
+    private void Start()
     {
         chunkSpawners = transform.GetComponent<PlayerController>().ChunkSpawners;
     }
@@ -45,7 +45,16 @@ public class BoostController : MonoBehaviour
 
         while (!Input.GetKeyUp(KeyCode.W) && IsBoosting)
         {
-            transform.position = Vector3.Lerp(transform.position, targetPos, progress);
+            transform.SetPositionAndRotation(
+            Vector3.Lerp(
+                transform.position,
+                targetPos,
+                progress),
+            Quaternion.Slerp(
+                transform.rotation,
+                Quaternion.identity,
+                progress));
+
             jetMat.SetFloat("_BoostPower", Mathf.Lerp(0, 5, progress));
 
             foreach (var item in jetLights)
@@ -60,13 +69,23 @@ public class BoostController : MonoBehaviour
             progress += Time.deltaTime / duration;
             yield return null;
         }
-        if(IsBoosting) { IsBoosting = false; }
-        duration =0.25f;
+        if (IsBoosting) { IsBoosting = false; }
+        duration = 0.25f;
         progress = 0f;
         PlayerBoostSFX();
         while (progress <= 1f)
         {
-            transform.position = Vector3.Lerp(transform.position, originPos, progress);
+            //transform.position = Vector3.Lerp(transform.position, originPos, progress);
+            transform.SetPositionAndRotation(
+                Vector3.Lerp(
+                    transform.position,
+                    originPos,
+                    progress),
+                Quaternion.Slerp(
+                    transform.rotation,
+                    Quaternion.identity,
+                    progress));
+
             jetMat.SetFloat("_BoostPower", Mathf.Lerp(jetMat.GetFloat("_BoostPower"), 0, progress));
 
             foreach (var item in jetLights)
