@@ -88,10 +88,9 @@ namespace AmazingAssets.CurvedWorld.Example
                     break;
             }
            
-
-
             lastChunk = thisChunk.gameObject;
             lastChunk.transform.position = newPos;
+
         }
     }
 }
