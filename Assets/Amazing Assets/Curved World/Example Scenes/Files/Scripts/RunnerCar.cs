@@ -26,13 +26,27 @@ namespace AmazingAssets.CurvedWorld.Example
             }
         }
 
-        void OnCollisionEnter(Collision collision)
+        void OnTriggerEnter(Collider triggerCollider)
         {
-            if (collision.rigidbody)
+            //Cameron Edit
+            //--
+            //Added Rigibodies and colliders to the cars, with is trigger checked. Mesh Collider also applied to Batmobile.
+            //Check below stops false positives (collisions) with the curved world floor/road.
+            //
+            if (triggerCollider.gameObject.name == "Batmobile")
             {
-                Vector3 force = (Vector3.up * 2 + Random.insideUnitSphere).normalized * Random.Range(100, 150);
-                collision.rigidbody.AddForce(force, ForceMode.Impulse);
+                Debug.Log("COLLISION");
             }
+            else
+            {
+                return;
+            }
+
+            // if (collision.rigidbody)
+            //{
+            //Vector3 force = (Vector3.up * 2 + Random.insideUnitSphere).normalized * Random.Range(100, 150);
+            //collision.rigidbody.AddForce(force, ForceMode.Impulse);
+            // }
         }
     }
 }
