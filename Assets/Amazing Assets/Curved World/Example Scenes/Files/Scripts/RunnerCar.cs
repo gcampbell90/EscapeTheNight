@@ -26,13 +26,5 @@ namespace AmazingAssets.CurvedWorld.Example
             }
         }
 
-        void OnCollisionEnter(Collision collision)
-        {
-            if (collision.rigidbody)
-            {
-                Vector3 force = (Vector3.up * 2 + Random.insideUnitSphere).normalized * Random.Range(100, 150);
-                collision.rigidbody.AddForce(force, ForceMode.Impulse);
-            }
-        }
     }
 }
