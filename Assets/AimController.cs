@@ -115,51 +115,71 @@ public class AimController : MonoBehaviour
 
         if (isFiring == true && Input.GetKeyDown(KeyCode.Mouse0))
         {
-            FireAtTarget();
+           StartCoroutine(FireAtTarget());
+
+        }else if(isFiring == false || Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            Debug.Log("Mouse0 up");
+            StopAllCoroutines();
         }
     }
 
-    private void FireAtTarget()
+    private IEnumerator FireAtTarget()
     {
-        var shootPositionL = pivot.position;
-        var shootPositionR = pivot1.position;
-        var shootDirectionL = pivot.transform.TransformDirection(Vector3.forward);//might work
-        var shootDirectionR = pivot1.transform.TransformDirection(Vector3.forward);//might work
-
-        RaycastHit hitL;
-        RaycastHit hitR;
-
-        // Does the ray intersect any objects excluding the player layer
-        if (Physics.Raycast(shootPositionL, shootDirectionL, out hitL, 100))
+        while (!Input.GetKeyUp(KeyCode.Mouse0))
         {
-            Debug.DrawRay(shootPositionL, shootDirectionL * hitL.distance, Color.green);
-            SpawnEffect(hitL, shootDirectionL);
+            var shootPositionL = aimCamera.transform.position;
+            var shootPositionR = aimCamera.transform.position;
 
-            Debug.Log("L Did Hit " + hitL.collider);
-        }
-        else
-        {
-            Debug.DrawRay(shootPositionL, shootDirectionL * 1000, Color.red);
-            Debug.Log("L Did not Hit");
-        }
-        if (Physics.Raycast(shootPositionR, shootDirectionR, out hitR, 100))
-        {
-            Debug.DrawRay(shootPositionR, shootDirectionR * hitR.distance, Color.green);
-            SpawnEffect(hitR, shootDirectionR);
+            var shootDirectionL = aimCamera.transform.TransformDirection(Vector3.forward);
+            var shootDirectionR = aimCamera.transform.TransformDirection(Vector3.forward);
+            //replacing with camera raycast
+            //var shootPositionL = pivot.position;
+            //var shootPositionR = pivot1.position;
 
-            Debug.Log("R Did Hit " + hitR.collider);
+            //var shootDirectionL = pivot.transform.TransformDirection(Vector3.forward);//might work
+            //var shootDirectionR = pivot1.transform.TransformDirection(Vector3.forward);//might work
+
+            RaycastHit hitL;
+            RaycastHit hitR;
+
+            // Does the ray intersect any objects excluding the player layer
+            if (Physics.Raycast(shootPositionL, shootDirectionL, out hitL, 100))
+            {
+                Debug.DrawRay(shootPositionL, shootDirectionL * hitL.distance, Color.green);
+                SpawnEffect(hitL, shootDirectionL);
+
+                Debug.Log("L Did Hit " + hitL.collider);
+                hitL.transform.SendMessage("HitByRay", SendMessageOptions.DontRequireReceiver);
+            }
+            else
+            {
+                Debug.DrawRay(shootPositionL, shootDirectionL * 1000, Color.red);
+                Debug.Log("L Did not Hit");
+            }
+            if (Physics.Raycast(shootPositionR, shootDirectionR, out hitR, 100))
+            {
+                Debug.DrawRay(shootPositionR, shootDirectionR * hitR.distance, Color.green);
+                SpawnEffect(hitR, shootDirectionR);
+
+                Debug.Log("R Did Hit " + hitR.collider);
+                hitR.transform.SendMessage("HitByRay", SendMessageOptions.DontRequireReceiver);
+
+            }
+            else
+            {
+                Debug.DrawRay(shootPositionR, shootDirectionR * 1000, Color.red);
+                Debug.Log("R Did not Hit");
+            }
+            yield return new WaitForSeconds(0.1f);
         }
-        else
-        {
-            Debug.DrawRay(shootPositionR, shootDirectionR * 1000, Color.red);
-            Debug.Log("R Did not Hit");
-        }
+      
     }
 
     [SerializeField] GameObject sprite;
     private void SpawnEffect(RaycastHit hit, Vector3 dir)
     {
-        Debug.Log("Spawn Sprite");
+        Debug.Log("Spawn Gun hit Sprite");
         
         var spriteTmp = Instantiate(sprite, hit.point, Quaternion.Euler(dir), hit.transform);
         //spriteTmp.transform.SetParent(point.transform, true);

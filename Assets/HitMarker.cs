@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,16 +10,26 @@ public class HitMarker : MonoBehaviour
     private void OnEnable()
     {
         markerCount++;
-        Debug.Log(markerCount);
+        StartCoroutine(DestroyOnSec(0.5f));
+        //Debug.Log(markerCount);
     }
 
-    private void Update()
+    private IEnumerator DestroyOnSec(float v)
     {
-        if (!gameObject.activeInHierarchy)
+        var timer = 0f;
+        while(timer <= v)
         {
-            Destroy(gameObject);
-            markerCount--;
+            timer += Time.deltaTime;
+            yield return null;
         }
+        Destroy(gameObject);
+        markerCount--;
+        //Debug.Log(markerCount);
+    }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
     }
 
 }
