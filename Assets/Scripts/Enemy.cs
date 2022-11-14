@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
     {
         float _t = 0f;
         float dur = 0.25f; 
-        Vector3 _offset = new Vector3(Random.Range(-2.5f, 2.5f), Random.Range(-5f, 5f), Random.Range(2f, 10f));
+        Vector3 _offset = new Vector3(Random.Range(-2.5f, 2.5f), Random.Range(5, 5f), Random.Range(1f,5f));
         var _origin = transform.position;
         while (true)
         {
@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
             if(_t > 1f)
             {
                 _t = 0f;
-                _offset = new Vector3(Random.Range(-2.5f, 2.5f), Random.Range(-5f, 5f), Random.Range(2f, 10f));
+                _offset = new Vector3(Random.Range(-2.5f, 2.5f), Random.Range(5, 5f), Random.Range(1f, 5f));
                 continue;
             }
             _t += Time.deltaTime / dur;

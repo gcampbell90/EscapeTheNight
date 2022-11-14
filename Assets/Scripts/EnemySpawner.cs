@@ -23,6 +23,7 @@ public class EnemySpawner : MonoBehaviour
             _pos.x = (x - _offset) * _spacing;
             _pos.y = _y;
             _pos.z = 10;
+
             var _enemy = Instantiate(enemy);
             _enemy.GetComponent<Enemy>().TargetPos = _pos;
         }

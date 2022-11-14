@@ -21,12 +21,19 @@ public class AimController : MonoBehaviour
     [SerializeField] Transform pivot;
     [SerializeField] Transform pivot1;
 
-
-
+    LineRenderer lineRendererL;
+    LineRenderer lineRendererR;
     void Awake()
     {
         mainCamera = Camera.main;
         Vector3 euler = transform.rotation.eulerAngles;
+
+        lineRendererL = pivot.GetComponentInChildren<LineRenderer>();
+        lineRendererR = pivot1.GetComponentInChildren<LineRenderer>();
+
+        lineRendererL.enabled = false;
+        lineRendererR.enabled = false;
+
 
     }
 
@@ -143,6 +150,10 @@ public class AimController : MonoBehaviour
             RaycastHit hitL;
             RaycastHit hitR;
 
+
+            lineRendererL.enabled = true;
+            lineRendererR.enabled = true;
+
             // Does the ray intersect any objects excluding the player layer
             if (Physics.Raycast(shootPositionL, shootDirectionL, out hitL, 100))
             {
@@ -171,7 +182,11 @@ public class AimController : MonoBehaviour
                 Debug.DrawRay(shootPositionR, shootDirectionR * 1000, Color.red);
                 Debug.Log("R Did not Hit");
             }
-            yield return new WaitForSeconds(0.1f);
+
+            yield return new WaitForEndOfFrame();
+            lineRendererL.enabled = false;
+            lineRendererR.enabled = false;
+            yield return new WaitForSeconds(0.05f);
         }
       
     }

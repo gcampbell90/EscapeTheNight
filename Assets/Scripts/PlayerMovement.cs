@@ -78,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
         }
         isRunning = true;
 
-        //PlayerTurnSFX();
+        PlayerTurnSFX();
 
         float progress = 0f;
         float duration = 0.5f;
