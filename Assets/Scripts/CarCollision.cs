@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class CarCollision : MonoBehaviour
 {
     BoxCollider _collider;
+
     private void Awake()
     {
         _collider = GetComponent<BoxCollider>();
@@ -18,7 +19,7 @@ public class CarCollision : MonoBehaviour
         //Added Rigibodies and colliders to the cars, with is trigger checked. Mesh Collider also applied to Batmobile.
         //Check below stops false positives (collisions) with the curved world floor/road.
         //
-        if (triggerCollider.gameObject.name == "Batmobile")
+        if (triggerCollider.gameObject.name == "Player")
         {
             Debug.Log("COLLISION");
             StartCoroutine(CarCollisionEffect());
@@ -42,20 +43,23 @@ public class CarCollision : MonoBehaviour
         var timer = 0f;
         var dur = 0.5f;
 
-        var originPosition = transform.localPosition;
-        var originRotation = transform.localRotation;
-        var targetPos = new Vector3(0,0, Random.Range(5,10));
-        var targetRot = Quaternion.Euler(20, 20, 20);
+        var _originPos = transform.localPosition;
+        var _originRot = transform.localRotation;
+        var _targetPos = _originPos + new Vector3(Random.Range(5, 20), Random.Range(5, 20), Random.Range(1,5));
+        var _targetRot = Quaternion.Euler(20, 20, 20);
 
         while (timer < 1f)
         {
-            transform.localPosition = Vector3.Lerp(originPosition, targetPos, timer);
-            //Quaternion.Slerp(Quaternion.identity, targetRot, timer));
+            var _rot = Quaternion.Slerp(Quaternion.identity, _targetRot, timer);
+            var _pos = Vector3.Slerp(_originPos, _targetPos, timer);
+
+            transform.SetLocalPositionAndRotation(_pos, _rot);
             timer += Time.deltaTime / dur;
             yield return null;
         }
-        yield return new WaitForSeconds(0.25f);
-        transform.localPosition = originPosition;
+        yield return new WaitForSeconds(0.2f);
+        transform.SetLocalPositionAndRotation(_originPos, _originRot);
+
         _collider.enabled = true;
     }
 

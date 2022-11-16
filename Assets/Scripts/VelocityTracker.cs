@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class VelocityTracker : MonoBehaviour
 {
-    PlayerController playerController;
+    private PlayerController playerController;
 
-    public float totalLevelDistanceMiles;
+    private float totalLevelDistanceMiles;
     public float DistanceCovered { get; set; }
     public float TotalDistanceRemaining { get; set; }
 
-    private const float _meterToMile = 0.00062f;
-    private const float _mphToMs = 0.44704f;
+    private const float METER_TO_MILE = 0.00062f;
+    private const float MPH_TO_MS = 0.44704f;
     //private const float msToMph = 2.2369f;
 
     private float _eta;
@@ -20,10 +20,10 @@ public class VelocityTracker : MonoBehaviour
     float distanceNormal, distanceBoost;
     float timer;
 
-    public float GetMeterPerSec(float mph)
+    private void Awake()
     {
-        return (mph * _mphToMs);
-    }
+        totalLevelDistanceMiles = GameController.Instance.LevelLength_Miles;
+    } 
     void Start()
     {
         playerController = GetComponent<PlayerController>();
@@ -39,14 +39,13 @@ public class VelocityTracker : MonoBehaviour
         float _boostTimer = 0f;
 
         var boostController = playerController.BoostController;
-        var mph = playerController.NormalSpeed;
 
         while (true)
         {
             if (!boostController.IsBoosting)
             {
                 //Debug.Log("normal vel:");
-                playerController.Speed = playerController.NormalSpeed;
+                playerController.Speed = playerController.CurrentSpeed;
                 distanceNormal = playerController.Speed * _normalTimer;
                 _normalTimer += Time.deltaTime;
             }
@@ -58,13 +57,13 @@ public class VelocityTracker : MonoBehaviour
                 _boostTimer += Time.deltaTime;
             }
 
-            DistanceCovered = (distanceNormal * _meterToMile) + (distanceBoost * _meterToMile);
+            DistanceCovered = (distanceNormal * METER_TO_MILE) + (distanceBoost * METER_TO_MILE);
 
             TotalDistanceRemaining = totalLevelDistanceMiles - DistanceCovered;
 
-            _eta = (TotalDistanceRemaining / playerController.Normal_MPH);
+            _eta = (TotalDistanceRemaining / GameController.Instance.StandardSpeed_MPH);
 
-            _targetEta = ((totalLevelDistanceMiles / playerController.Normal_MPH) * 0.8f);
+            _targetEta = ((totalLevelDistanceMiles / GameController.Instance.StandardSpeed_MPH) * 0.8f);
             countDown = ToSeconds(_targetEta) - timer;
             var etaSecs = ToSeconds(_eta);
 
@@ -81,8 +80,9 @@ public class VelocityTracker : MonoBehaviour
 
             var progress = DistanceCovered / totalLevelDistanceMiles;
 
-            //Debug.Log($"{message}, {_eta}, {_targetEta}, {countDown}, {progress}");
             playerController.UpdateUI(countDown, etaSecs, message, col, TotalDistanceRemaining, progress);
+            //Debug.Log($"{message}, {_eta}, {_targetEta}, {countDown}, {progress}");
+
             yield return null;
         }
     }
@@ -93,5 +93,8 @@ public class VelocityTracker : MonoBehaviour
         var seconds = eta;
         return seconds;
     }
-
+    public float GetMeterPerSec(float mph)
+    {
+        return (mph * MPH_TO_MS);
+    }
 }

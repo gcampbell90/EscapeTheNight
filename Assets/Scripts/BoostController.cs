@@ -34,7 +34,7 @@ public class BoostController : MonoBehaviour
         float duration = 0.5f;
 
         float boostPos = 2;
-        var startSpeed = GetComponent<PlayerController>().NormalSpeed;
+        var startSpeed = GetComponent<PlayerController>().CurrentSpeed;
         var boostSpeed = GetComponent<PlayerController>().BoostSpeed;
 
         var originPos = transform.position;

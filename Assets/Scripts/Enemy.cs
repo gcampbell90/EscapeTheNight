@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class Enemy : MonoBehaviour
 {
     private int health = 10;
-
+    private bool isAnimated = false;
     public Vector3 TargetPos { get; set; }
 
     private void Start()
@@ -16,6 +16,11 @@ public class Enemy : MonoBehaviour
         StartCoroutine(MoveToTarget());
     }
 
+    public void Animate()
+    {
+        isAnimated = true;
+        StartCoroutine(FloatAround());
+    }
     private IEnumerator MoveToTarget()
     {
         float timer = 0;
@@ -27,14 +32,14 @@ public class Enemy : MonoBehaviour
             timer += Time.deltaTime/ duration;
             yield return null;
         }
-        StartCoroutine(FloatAround());
+        if (!isAnimated) yield break; 
     }
 
     private IEnumerator FloatAround()
     {
         float _t = 0f;
         float dur = 0.25f; 
-        Vector3 _offset = new Vector3(Random.Range(-2.5f, 2.5f), Random.Range(5, 5f), Random.Range(1f,5f));
+        Vector3 _offset = new Vector3(Random.Range(-5f, 5f), Random.Range(3, 7f), Random.Range(5f,10f));
         var _origin = transform.position;
         while (true)
         {

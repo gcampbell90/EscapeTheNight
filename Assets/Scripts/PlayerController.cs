@@ -23,15 +23,9 @@ public class PlayerController : MonoBehaviour
     //Scene spawner speed
     public ChunkSpawner[] chunkSpawners;
     public ChunkSpawner[] ChunkSpawners { get { return chunkSpawners; } set { ChunkSpawners = chunkSpawners; } }
-    float borderRange = 8;
 
-    [SerializeField] private float normal_MPH;
-    public float Normal_MPH { get { return normal_MPH; } set { normal_MPH = Normal_MPH; } }
-
-    [SerializeField] private float boost_MPH;
-    public float Boost_MPH { get; set; }
-    public float NormalSpeed { get; set; }
-    public float BoostSpeed { get; set; }
+    public float CurrentSpeed => velocityTracker.GetMeterPerSec(GameController.Instance.StandardSpeed_MPH);
+    public float BoostSpeed => velocityTracker.GetMeterPerSec(GameController.Instance.BoostSpeed_MPH);
     public float Speed { get; set; }
 
     private BoostController boostController;
@@ -39,23 +33,24 @@ public class PlayerController : MonoBehaviour
 
     private VelocityTracker velocityTracker;
 
+    public delegate void DoSomething();
+    public static event DoSomething doSomething;
+
     private void Awake()
     {
-
         boostController = GetComponent<BoostController>();
         velocityTracker = GetComponent<VelocityTracker>();
 
-        //Changes MPH input from player controller to m/s which will be the unit of measure
-        NormalSpeed = BoostSpeed = velocityTracker.GetMeterPerSec(normal_MPH);
-        BoostSpeed = velocityTracker.GetMeterPerSec(boost_MPH);
+        Speed = CurrentSpeed;
 
-        Speed = NormalSpeed;
+    }
 
+    private void Start()
+    {
         foreach (var chunk in chunkSpawners)
         {
             chunk.movingSpeed = Speed;
         }
-
     }
 
     public void UpdateUI(float countDown, float eta, string message, Color col, float distanceRemaining, float progress)
@@ -65,4 +60,9 @@ public class PlayerController : MonoBehaviour
         _progressSlider.value = progress;
     }
 
+    private void OnTriggerEnter(Collider collision)
+    {
+        Debug.Log($"Vehicle Hit by {collision}");
+
+    }
 }

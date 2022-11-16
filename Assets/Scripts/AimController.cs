@@ -21,6 +21,8 @@ public class AimController : MonoBehaviour
     [SerializeField] Transform pivot;
     [SerializeField] Transform pivot1;
 
+    [SerializeField] GameObject gun_UI, main_UI;
+
     LineRenderer lineRendererL;
     LineRenderer lineRendererR;
     void Awake()
@@ -43,6 +45,7 @@ public class AimController : MonoBehaviour
         if (aimCamera.enabled)
         {
             aimCamera.enabled = false;
+            gun_UI.SetActive(false);
         }
     }
 
@@ -107,24 +110,33 @@ public class AimController : MonoBehaviour
         }
         if (mainCamera.enabled == false)
         {
-            isFiring = true;
             FollowMouse();
-            SlowTime();
+            if (!isFiring)
+            {
+                Debug.Log("SHould be called in update once(with if check)");
+                SlowTime();
+                ToggleUI(true);
+            }
+            isFiring = true;
         }
         else
         {
+            if (!isFiring) return;
+            Debug.Log("SHould be called in update once(with if check)");
             isFiring = false;
-
             pivot.transform.rotation = Quaternion.identity;
             pivot1.transform.rotation = Quaternion.identity;
             NormalTime();
+            ToggleUI(false);
+
         }
 
         if (isFiring == true && Input.GetKeyDown(KeyCode.Mouse0))
         {
-           StartCoroutine(FireAtTarget());
+            StartCoroutine(FireAtTarget());
 
-        }else if(isFiring == false || Input.GetKeyUp(KeyCode.Mouse0))
+        }
+        else if (isFiring == false || Input.GetKeyUp(KeyCode.Mouse0))
         {
             Debug.Log("Mouse0 up");
             StopAllCoroutines();
@@ -188,19 +200,24 @@ public class AimController : MonoBehaviour
             lineRendererR.enabled = false;
             yield return new WaitForSeconds(0.05f);
         }
-      
+
     }
 
     [SerializeField] GameObject sprite;
     private void SpawnEffect(RaycastHit hit, Vector3 dir)
     {
         Debug.Log("Spawn Gun hit Sprite");
-        
+
         var spriteTmp = Instantiate(sprite, hit.point, Quaternion.Euler(dir), hit.transform);
         //spriteTmp.transform.SetParent(point.transform, true);
         spriteTmp.SetActive(true);
     }
 
+    private void ToggleUI(bool isOn)
+    {
+        main_UI.SetActive(!isOn);
+        gun_UI.SetActive(isOn);
+    }
     private void SlowTime()
     {
         Time.timeScale = 0.25f;

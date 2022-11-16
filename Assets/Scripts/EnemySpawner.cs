@@ -6,6 +6,7 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]private int enemyCount;
     [SerializeField] GameObject enemy;
+    [SerializeField] bool isMoving;
 
     // Start is called before the first frame update
     void Start()
@@ -19,14 +20,15 @@ public class EnemySpawner : MonoBehaviour
 
         for (int x = 0; x < enemyCount; x++)
         {
-            _y = 5;
+            _y = 7;
             _pos.x = (x - _offset) * _spacing;
             _pos.y = _y;
             _pos.z = 10;
 
             var _enemy = Instantiate(enemy);
             _enemy.GetComponent<Enemy>().TargetPos = _pos;
+            if (isMoving) _enemy.GetComponent<Enemy>().Animate(); continue;
+            
         }
     }
-
 }
