@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028562, g: 0.22571635, b: 0.30692384, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,8 +97,10 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000002, guid: 7ce297bda8247af4394f2eee5027525f, type: 2}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: d96eb28a1b86a394eae81c76ee24c857, type: 2}
+  m_LightingDataAsset: {fileID: 112000002, guid: 7ce297bda8247af4394f2eee5027525f,
+    type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: d96eb28a1b86a394eae81c76ee24c857,
+    type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -5554,8 +5556,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 861033da53bcf1e49a4b4b68b7efab0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputStandard: {fileID: 6894542679109214367, guid: 7de9027583b7da7498a60b684170cafa, type: 3}
-  InputNew: {fileID: 5356037469737484865, guid: 5b10e592e0b4e3648ae8a494ad9d1126, type: 3}
+  InputStandard: {fileID: 6894542679109214367, guid: 7de9027583b7da7498a60b684170cafa,
+    type: 3}
+  InputNew: {fileID: 5356037469737484865, guid: 5b10e592e0b4e3648ae8a494ad9d1126,
+    type: 3}
 --- !u!4 &498914967
 Transform:
   m_ObjectHideFlags: 0

@@ -10988,7 +10988,7 @@ MonoBehaviour:
   - {fileID: 1387551930}
   - {fileID: 1932653410}
   initialSpawnCount: 15
-  destoryZone: 300
+  destroyZone: 300
   axis: 1
   moveDirection: {x: -1, y: 0, z: 0}
   movingSpeed: 30
