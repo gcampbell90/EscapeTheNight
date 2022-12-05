@@ -7,25 +7,25 @@ using UnityEngine.UI;
 
 public class BoostController : MonoBehaviour
 {
-    [SerializeField] Slider boostBar;
-
-    ChunkSpawner[] chunkSpawners;
-
+    PlayerController playerController;
     public bool IsBoosting { get; set; }
 
-
-    private void Start()
+    float fuel = 100f;
+    private void Awake()
     {
-        chunkSpawners = transform.GetComponent<PlayerController>().ChunkSpawners;
+        playerController = GetComponent<PlayerController>();
     }
 
     public void Booster()
     {
+        IsBoosting = true;
         //use fuel
         StartCoroutine(Boosting());
-        StartCoroutine(Boost());
-    }
 
+        //play boost animation
+        StartCoroutine(Boost());
+
+    }
     private IEnumerator Boost()
     {
         PlayerBoostSFX();
@@ -34,7 +34,7 @@ public class BoostController : MonoBehaviour
         float duration = 0.5f;
 
         float boostPos = 2;
-        var startSpeed = GetComponent<PlayerController>().CurrentSpeed;
+        var startSpeed = GetComponent<PlayerController>().StandardSpeed;
         var boostSpeed = GetComponent<PlayerController>().BoostSpeed;
 
         var originPos = transform.position;
@@ -42,6 +42,8 @@ public class BoostController : MonoBehaviour
 
         var jetMat = transform.GetChild(0).GetComponent<Renderer>().material;
         var jetLights = transform.GetComponentsInChildren<Light>();
+
+        GameController.onSpeedChange?.Invoke(boostSpeed);
 
         while (!Input.GetKeyUp(KeyCode.W) && IsBoosting)
         {
@@ -62,17 +64,18 @@ public class BoostController : MonoBehaviour
                 item.intensity = Mathf.Lerp(0, 100, progress);
             }
 
-            foreach (var chunk in chunkSpawners)
-            {
-                chunk.movingSpeed = Mathf.Lerp(startSpeed, boostSpeed, progress);
-            }
             progress += Time.deltaTime / duration;
             yield return null;
         }
-        if (IsBoosting) { IsBoosting = false; }
+
+        if (IsBoosting) { 
+            IsBoosting = false; 
+        }
+        PlayerBoostSFX();
+
         duration = 0.25f;
         progress = 0f;
-        PlayerBoostSFX();
+
         while (progress <= 1f)
         {
             //transform.position = Vector3.Lerp(transform.position, originPos, progress);
@@ -92,31 +95,29 @@ public class BoostController : MonoBehaviour
             {
                 item.intensity = Mathf.Lerp(item.intensity, 0, progress);
             }
-            foreach (var chunk in chunkSpawners)
-            {
-                chunk.movingSpeed = Mathf.Lerp(chunk.movingSpeed, startSpeed, progress);
-            }
 
             progress += Time.deltaTime / duration;
             yield return null;
         }
+
+        GameController.onSpeedChange?.Invoke(startSpeed);
+        
         jetMat.SetFloat("_BoostPower", 0);
     }
-
     private void PlayerBoostSFX()
     {
         var audioController = GetComponent<AudioSourceController>();
         audioController.ToggleJetSFX();
     }
 
+    //Deplete and Recharge boost bar
     private IEnumerator Boosting()
     {
-        if (IsBoosting) yield break;
-        IsBoosting = true;
-        while (IsBoosting && boostBar.value >= 0.01f)
+        while (IsBoosting && fuel > 0 )
         {
-            //Debug.Log(boostBar.value);
-            boostBar.value -= Time.deltaTime * 0.1f;
+            fuel -= Time.deltaTime * 10;
+            
+            playerController.UpdateUI(fuel);
             yield return null;
         }
         IsBoosting = false;
@@ -125,10 +126,10 @@ public class BoostController : MonoBehaviour
 
     private IEnumerator Refueling()
     {
-        if (IsBoosting) yield break;
-        while (!IsBoosting && boostBar.value <= 1)
+        while (!IsBoosting && fuel <=100)
         {
-            boostBar.value += Time.deltaTime * 0.1f;
+            fuel += Time.deltaTime * 5f;
+            playerController.UpdateUI(fuel);
             yield return null;
         }
     }

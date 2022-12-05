@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
+using static VelocityTracker;
 
 
 public class VelocityTracker : MonoBehaviour
@@ -12,7 +14,6 @@ public class VelocityTracker : MonoBehaviour
 
     private const float METER_TO_MILE = 0.00062f;
     private const float MPH_TO_MS = 0.44704f;
-    //private const float msToMph = 2.2369f;
 
     private float _eta;
     private float _targetEta;
@@ -20,13 +21,13 @@ public class VelocityTracker : MonoBehaviour
     float distanceNormal, distanceBoost;
     float timer;
 
-    private void Awake()
-    {
-        totalLevelDistanceMiles = GameController.Instance.LevelLength_Miles;
-    } 
+
     void Start()
     {
+        totalLevelDistanceMiles = GameController.Instance.LevelLength_Miles;
+
         playerController = GetComponent<PlayerController>();
+
         StartCoroutine(CalculateMetrics());
     }
 
@@ -44,16 +45,12 @@ public class VelocityTracker : MonoBehaviour
         {
             if (!boostController.IsBoosting)
             {
-                //Debug.Log("normal vel:");
-                playerController.Speed = playerController.CurrentSpeed;
-                distanceNormal = playerController.Speed * _normalTimer;
+                distanceNormal = playerController.CurrentSpeed * _normalTimer;
                 _normalTimer += Time.deltaTime;
             }
             else if (boostController.IsBoosting)
             {
-                //Debug.Log("Boost vel:");
-                playerController.Speed = playerController.BoostSpeed;
-                distanceBoost = playerController.Speed * _boostTimer;
+                distanceBoost = playerController.CurrentSpeed * _boostTimer;
                 _boostTimer += Time.deltaTime;
             }
 
@@ -77,7 +74,6 @@ public class VelocityTracker : MonoBehaviour
 
             timer += Time.deltaTime;
 
-
             var progress = DistanceCovered / totalLevelDistanceMiles;
 
             playerController.UpdateUI(countDown, etaSecs, message, col, TotalDistanceRemaining, progress);
@@ -86,14 +82,14 @@ public class VelocityTracker : MonoBehaviour
             yield return null;
         }
     }
-    float ToSeconds(float eta)
+    static float ToSeconds(float eta)
     {
         eta *= 60;
         eta *= 60;
         var seconds = eta;
         return seconds;
     }
-    public float GetMeterPerSec(float mph)
+    static public float GetMeterPerSec(float mph)
     {
         return (mph * MPH_TO_MS);
     }

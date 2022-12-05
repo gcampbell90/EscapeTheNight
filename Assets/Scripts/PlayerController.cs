@@ -19,38 +19,34 @@ public class PlayerController : MonoBehaviour
     //UI
     [SerializeField] private TextMeshProUGUI _gpsInfo;
     [SerializeField] private Slider _progressSlider;
+    [SerializeField] private Slider _boostSlider;
 
     //Scene spawner speed
     public ChunkSpawner[] chunkSpawners;
     public ChunkSpawner[] ChunkSpawners { get { return chunkSpawners; } set { ChunkSpawners = chunkSpawners; } }
 
-    public float CurrentSpeed => velocityTracker.GetMeterPerSec(GameController.Instance.StandardSpeed_MPH);
-    public float BoostSpeed => velocityTracker.GetMeterPerSec(GameController.Instance.BoostSpeed_MPH);
-    public float Speed { get; set; }
+    public float StandardSpeed { get; set; }
+    public float BoostSpeed { get; set; }
+    public float CurrentSpeed { get; set; }
 
     private BoostController boostController;
     public BoostController BoostController { get { return boostController; } set { boostController = BoostController; } }
 
     private VelocityTracker velocityTracker;
 
-    public delegate void DoSomething();
-    public static event DoSomething doSomething;
-
-    private void Awake()
+     private void Awake()
     {
         boostController = GetComponent<BoostController>();
         velocityTracker = GetComponent<VelocityTracker>();
-
-        Speed = CurrentSpeed;
-
     }
 
     private void Start()
     {
-        foreach (var chunk in chunkSpawners)
-        {
-            chunk.movingSpeed = Speed;
-        }
+        StandardSpeed = VelocityTracker.GetMeterPerSec(GameController.Instance.StandardSpeed_MPH);
+        BoostSpeed = VelocityTracker.GetMeterPerSec(GameController.Instance.BoostSpeed_MPH);
+
+        CurrentSpeed = StandardSpeed;
+        //Debug.Log($"Normal m/s: {VelocityTracker.GetMeterPerSec(GameController.Instance.StandardSpeed_MPH)} Boost m:s: {VelocityTracker.GetMeterPerSec(GameController.Instance.BoostSpeed_MPH)} CurrentSpeed: {CurrentSpeed}");
     }
 
     public void UpdateUI(float countDown, float eta, string message, Color col, float distanceRemaining, float progress)
@@ -60,9 +56,23 @@ public class PlayerController : MonoBehaviour
         _progressSlider.value = progress;
     }
 
+    public void UpdateUI(float progress)
+    {
+        progress /= 100;
+        _boostSlider.value = progress;
+    }
+
     private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log($"Vehicle Hit by {collision}");
+        Debug.Log($"Player Hit something");
 
     }
+
+    ////Sets game controllers new speed
+    //public void SpeedChange(float newSpeed)
+    //{
+    //    Debug.Log("Changing Speed player controller " + newSpeed);
+    //    CurrentSpeed = newSpeed;
+    //    GameController.Instance.EnvironmentSpeedChange(newSpeed);
+    //}
 }

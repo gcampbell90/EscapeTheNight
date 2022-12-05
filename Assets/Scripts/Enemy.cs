@@ -74,6 +74,6 @@ public class Enemy : MonoBehaviour
     private void OnDestroy()
     {
         StopAllCoroutines();
-        Debug.Log("Enemy Killed");
+        Debug.Log("Enemy Destroyed");
     }
 }
