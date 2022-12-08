@@ -23,13 +23,15 @@ public class AimController : MonoBehaviour
 
     [SerializeField] GameObject gun_UI, main_UI;
 
-    LineRenderer lineRendererL;
-    LineRenderer lineRendererR;
+    //LineRenderer lineRendererL;
+    //LineRenderer lineRendererR;
 
     [SerializeField] GameObject sprite;
 
     [SerializeField] LineRenderer rendL;
     [SerializeField] LineRenderer rendR;
+
+    [SerializeField] Transform target;
 
     //use unscaled time to avoid input being influenced by slowed timescale 
     float timer = 0f;
@@ -41,11 +43,11 @@ public class AimController : MonoBehaviour
         mainCamera = Camera.main;
         Vector3 euler = transform.rotation.eulerAngles;
 
-        lineRendererL = rendL;
-        lineRendererR = rendR;
+        //lineRendererL = rendL;
+        //lineRendererR = rendR;
 
-        lineRendererL.enabled = false;
-        lineRendererR.enabled = false;
+        //lineRendererL.enabled = false;
+        //lineRendererR.enabled = false;
     }
 
     // Start is called before the first frame update
@@ -113,8 +115,12 @@ public class AimController : MonoBehaviour
         rotation.x = ClampHorizontalAngle(rotation.x);
 
         aimCamera.transform.eulerAngles = new Vector3(-rotation.y, rotation.x, 0);
-        pivot.transform.eulerAngles = new Vector3(-rotation.y, rotation.x, 0);
-        pivot1.transform.eulerAngles = new Vector3(-rotation.y, rotation.x, 0);
+
+        pivot.transform.rotation = Quaternion.Euler(-rotation.y, rotation.x, 0);
+        pivot1.transform.rotation = Quaternion.Euler(-rotation.y, rotation.x, 0);
+
+        //pivot.transform.eulerAngles = new Vector3(-rotation.y, rotation.x, 0);
+        //pivot1.transform.eulerAngles = new Vector3(-rotation.y, rotation.x, 0);
 
         timer += Time.unscaledDeltaTime;
     }
@@ -139,8 +145,8 @@ public class AimController : MonoBehaviour
             RaycastHit hitR;
 
 
-            lineRendererL.enabled = true;
-            lineRendererR.enabled = true;
+            //lineRendererL.enabled = true;
+            //lineRendererR.enabled = true;
 
             // Does the ray intersect any objects excluding the player layer
             if (Physics.Raycast(shootPositionL, shootDirectionL, out hitL, 100))
@@ -172,8 +178,8 @@ public class AimController : MonoBehaviour
             }
 
             yield return new WaitForEndOfFrame();
-            lineRendererL.enabled = false;
-            lineRendererR.enabled = false;
+            //lineRendererL.enabled = false;
+            //lineRendererR.enabled = false;
             yield return new WaitForSeconds(0.05f);
         }
 
