@@ -17,9 +17,13 @@ public class AimController : MonoBehaviour
     [SerializeField] float maxVerticalAngleHorizon;
     [SerializeField] float maxHorizontalAngleHorizon;
 
-    //Gun System
-    [SerializeField] Transform pivot;
-    [SerializeField] Transform pivot1;
+    //Gun System 1
+    [SerializeField] Transform gun1_Pivot;
+    [SerializeField] Transform gun1_Pivot1;
+
+    //Gun System 2
+    [SerializeField] Transform gun2_Pivot;
+    [SerializeField] Transform gun2_Pivot1;
 
     [SerializeField] GameObject gun_UI, main_UI;
 
@@ -30,6 +34,11 @@ public class AimController : MonoBehaviour
 
     [SerializeField] LineRenderer rendL;
     [SerializeField] LineRenderer rendR;
+
+
+    [SerializeField] ParticleSystem MuzzleFlashL;
+    [SerializeField] ParticleSystem MuzzleFlashR;
+    [SerializeField] GameObject ImpactEffect;
 
     [SerializeField] Transform target;
 
@@ -82,8 +91,10 @@ public class AimController : MonoBehaviour
         {
             if (!isFiring) return;
             isFiring = false;
-            pivot.transform.rotation = Quaternion.identity;
-            pivot1.transform.rotation = Quaternion.identity;
+            gun1_Pivot.transform.rotation = Quaternion.identity;
+            gun1_Pivot1.transform.rotation = Quaternion.identity;
+            gun2_Pivot.transform.rotation = Quaternion.identity;
+            gun2_Pivot1.transform.rotation = Quaternion.identity;
             NormalTime();
             ToggleUI(false);
 
@@ -116,8 +127,11 @@ public class AimController : MonoBehaviour
 
         aimCamera.transform.eulerAngles = new Vector3(-rotation.y, rotation.x, 0);
 
-        pivot.transform.rotation = Quaternion.Euler(-rotation.y, rotation.x, 0);
-        pivot1.transform.rotation = Quaternion.Euler(-rotation.y, rotation.x, 0);
+        gun1_Pivot.transform.rotation = Quaternion.Euler(-rotation.y, rotation.x, 0);
+        gun1_Pivot1.transform.rotation = Quaternion.Euler(-rotation.y, rotation.x, 0);
+
+        gun2_Pivot.transform.rotation = Quaternion.Euler(-rotation.y, rotation.x, 0);
+        gun2_Pivot1.transform.rotation = Quaternion.Euler(-rotation.y, rotation.x, 0);
 
         //pivot.transform.eulerAngles = new Vector3(-rotation.y, rotation.x, 0);
         //pivot1.transform.eulerAngles = new Vector3(-rotation.y, rotation.x, 0);
@@ -134,6 +148,10 @@ public class AimController : MonoBehaviour
 
             var shootDirectionL = aimCamera.transform.TransformDirection(Vector3.forward);
             var shootDirectionR = aimCamera.transform.TransformDirection(Vector3.forward);
+
+            MuzzleFlashL.Play();
+            MuzzleFlashR.Play();
+
             //replacing with camera raycast
             //var shootPositionL = pivot.position;
             //var shootPositionR = pivot1.position;
@@ -191,6 +209,9 @@ public class AimController : MonoBehaviour
         var spriteTmp = Instantiate(sprite, hit.point, Quaternion.Euler(dir), hit.transform);
         //spriteTmp.transform.SetParent(point.transform, true);
         spriteTmp.SetActive(true);
+
+        GameObject impactGO = Instantiate(ImpactEffect, hit.point, Quaternion.Euler(dir), hit.transform);
+        Destroy(impactGO, 2f);
     }
     private void ToggleUI(bool isOn)
     {
