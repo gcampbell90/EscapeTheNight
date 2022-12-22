@@ -21,10 +21,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Slider _progressSlider;
     [SerializeField] private Slider _boostSlider;
 
-    //Scene spawner speed
+    //environment chunks
     public ChunkSpawner[] chunkSpawners;
     public ChunkSpawner[] ChunkSpawners { get { return chunkSpawners; } set { ChunkSpawners = chunkSpawners; } }
-
+    
+    //Scene spawner speed
     public float StandardSpeed { get; set; }
     public float BoostSpeed { get; set; }
     public float CurrentSpeed { get; set; }
@@ -65,7 +66,6 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider collision)
     {
         Debug.Log($"Player Hit something");
-
     }
 
     ////Sets game controllers new speed

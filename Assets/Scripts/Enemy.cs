@@ -38,19 +38,21 @@ public class Enemy : MonoBehaviour
     private IEnumerator FloatAround()
     {
         float _t = 0f;
-        float dur = 0.25f; 
-        Vector3 _offset = new Vector3(Random.Range(-5f, 5f), Random.Range(3, 7f), Random.Range(5f,10f));
-        var _origin = transform.position;
+        float dur = 1f;
+        Vector3 _offset;
+
         while (true)
         {
-            transform.position = Vector3.Lerp(transform.position, _origin + _offset, _t);
-            if(_t > 1f)
+            _offset = new Vector3(Random.Range(-12f, 12f), Random.Range(5, 11f), Random.Range(10f, 20f));
+
+            while (_t < dur)
             {
-                _t = 0f;
-                _offset = new Vector3(Random.Range(-2.5f, 2.5f), Random.Range(5, 5f), Random.Range(1f, 5f));
-                continue;
+                transform.position = Vector3.Lerp(transform.position, _offset, _t);
+                transform.LookAt(Vector3.zero);
+                _t += Time.deltaTime / dur;
+                yield return null;
             }
-            _t += Time.deltaTime / dur;
+            _t = 0f;
 
             yield return null;
         }
@@ -58,13 +60,14 @@ public class Enemy : MonoBehaviour
 
     void HitByRay()
     {
-        Debug.Log("I was hit by a Ray");
+        Debug.Log($"{gameObject.name} was hit by a Ray");
         TakeDamage();
+
     }
 
     private void TakeDamage()
     {
-        health -= 4;
+        health -= 1;
         if(health <= 0)
         {
             Destroy(gameObject);

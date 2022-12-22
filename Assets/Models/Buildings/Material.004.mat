@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Material.004
-  m_Shader: {fileID: 4800000, guid: 37639dc9dfcb02e418de063aa605d992, type: 3}
+  m_Shader: {fileID: 4800000, guid: e9ef6a2e182f596438c0505d00d4a2f1, type: 3}
   m_ValidKeywords:
   - CURVEDWORLD_BEND_ID_2
   - CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE
@@ -96,6 +96,7 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _Blend: 0
+    - _BlendOp: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -107,15 +108,20 @@ Material:
     - _EnvironmentReflections: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
+    - _GlossinessSource: 0
     - _GlossyReflections: 1
-    - _Metallic: 0.668
+    - _Metallic: 1
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 1
+    - _SampleGI: 0
+    - _Shininess: 0
+    - _Smoothness: 0
+    - _SmoothnessSource: 0
     - _SmoothnessTextureChannel: 0
+    - _SpecSource: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
@@ -123,9 +129,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
-    - _Color: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
+    - _BaseColor: {r: 0.21698111, g: 0.21698111, b: 0.21698111, a: 1}
+    - _Color: {r: 0.21698105, g: 0.21698105, b: 0.21698105, a: 1}
     - _CurvedWorldBendSettings: {r: 2, g: 2, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _SpecColor: {r: 0.19999993, g: 0.19999993, b: 0.19999993, a: 0}
   m_BuildTextureStacks: []

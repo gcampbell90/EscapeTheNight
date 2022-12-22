@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class AimController : MonoBehaviour
@@ -206,11 +207,11 @@ public class AimController : MonoBehaviour
     {
         //Debug.Log("Spawn Gun hit Sprite");
 
-        var spriteTmp = Instantiate(sprite, hit.point, Quaternion.Euler(dir), hit.transform);
+        var spriteTmp = Instantiate(sprite, hit.point, Quaternion.identity, hit.transform);
         //spriteTmp.transform.SetParent(point.transform, true);
         spriteTmp.SetActive(true);
 
-        GameObject impactGO = Instantiate(ImpactEffect, hit.point, Quaternion.Euler(dir), hit.transform);
+        GameObject impactGO = Instantiate(ImpactEffect, hit.point, Quaternion.Euler(dir));
         Destroy(impactGO, 2f);
     }
     private void ToggleUI(bool isOn)
