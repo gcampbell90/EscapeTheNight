@@ -21,46 +21,31 @@ public class AimController : MonoBehaviour
     //Gun System 1
     [SerializeField] Transform gun1_Pivot;
     [SerializeField] Transform gun1_Pivot1;
+    [SerializeField] ParticleSystem MuzzleFlashL;
 
     //Gun System 2
     [SerializeField] Transform gun2_Pivot;
     [SerializeField] Transform gun2_Pivot1;
+    [SerializeField] ParticleSystem MuzzleFlashR;
 
+    //UI
     [SerializeField] GameObject gun_UI, main_UI;
-
-    //LineRenderer lineRendererL;
-    //LineRenderer lineRendererR;
-
-    [SerializeField] GameObject sprite;
 
     [SerializeField] LineRenderer rendL;
     [SerializeField] LineRenderer rendR;
 
-
-    [SerializeField] ParticleSystem MuzzleFlashL;
-    [SerializeField] ParticleSystem MuzzleFlashR;
     [SerializeField] GameObject ImpactEffect;
 
     [SerializeField] Transform target;
 
     //use unscaled time to avoid input being influenced by slowed timescale 
     float timer = 0f;
-
     bool isFiring;
 
     void Awake()
     {
         mainCamera = Camera.main;
-        Vector3 euler = transform.rotation.eulerAngles;
-
-        //lineRendererL = rendL;
-        //lineRendererR = rendR;
-
-        //lineRendererL.enabled = false;
-        //lineRendererR.enabled = false;
     }
-
-    // Start is called before the first frame update
     void Start()
     {
         if (aimCamera.enabled)
@@ -69,8 +54,6 @@ public class AimController : MonoBehaviour
             gun_UI.SetActive(false);
         }
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse1))
@@ -112,7 +95,6 @@ public class AimController : MonoBehaviour
             StopAllCoroutines();
         }
     }
-
     private void FollowMouse()
     {
         Vector2 targetVelocity = GetInput() * sensitivity;
@@ -139,7 +121,6 @@ public class AimController : MonoBehaviour
 
         timer += Time.unscaledDeltaTime;
     }
-
     private IEnumerator FireAtTarget()
     {
         while (!Input.GetKeyUp(KeyCode.Mouse0))
@@ -153,19 +134,8 @@ public class AimController : MonoBehaviour
             MuzzleFlashL.Play();
             MuzzleFlashR.Play();
 
-            //replacing with camera raycast
-            //var shootPositionL = pivot.position;
-            //var shootPositionR = pivot1.position;
-
-            //var shootDirectionL = pivot.transform.TransformDirection(Vector3.forward);//might work
-            //var shootDirectionR = pivot1.transform.TransformDirection(Vector3.forward);//might work
-
             RaycastHit hitL;
             RaycastHit hitR;
-
-
-            //lineRendererL.enabled = true;
-            //lineRendererR.enabled = true;
 
             // Does the ray intersect any objects excluding the player layer
             if (Physics.Raycast(shootPositionL, shootDirectionL, out hitL, 100))
@@ -188,7 +158,6 @@ public class AimController : MonoBehaviour
 
                 //Debug.Log("R Did Hit " + hitR.collider);
                 hitR.transform.SendMessage("HitByRay", SendMessageOptions.DontRequireReceiver);
-
             }
             else
             {
@@ -197,21 +166,14 @@ public class AimController : MonoBehaviour
             }
 
             yield return new WaitForEndOfFrame();
-            //lineRendererL.enabled = false;
-            //lineRendererR.enabled = false;
+
             yield return new WaitForSeconds(0.05f);
         }
-
     }
+
     private void SpawnEffect(RaycastHit hit, Vector3 dir)
     {
-        //Debug.Log("Spawn Gun hit Sprite");
-
-        var spriteTmp = Instantiate(sprite, hit.point, Quaternion.identity, hit.transform);
-        //spriteTmp.transform.SetParent(point.transform, true);
-        spriteTmp.SetActive(true);
-
-        GameObject impactGO = Instantiate(ImpactEffect, hit.point, Quaternion.Euler(dir));
+        GameObject impactGO = Instantiate(ImpactEffect, hit.point, Quaternion.Euler(dir), hit.transform);
         Destroy(impactGO, 2f);
     }
     private void ToggleUI(bool isOn)
@@ -227,6 +189,7 @@ public class AimController : MonoBehaviour
     {
         Time.timeScale = 0.25f;
     }
+
     Vector2 GetInput()
     {
         Vector2 input = new Vector2(

@@ -10,10 +10,12 @@ public class Enemy : MonoBehaviour
     private int health = 10;
     private bool isAnimated = false;
     public Vector3 TargetPos { get; set; }
+    public Transform PlayerTransform { get; set; }
 
     private void Start()
     {
         StartCoroutine(MoveToTarget());
+        StartCoroutine(LookAtTarget());
     }
 
     public void Animate()
@@ -21,18 +23,27 @@ public class Enemy : MonoBehaviour
         isAnimated = true;
         StartCoroutine(FloatAround());
     }
+
+    private IEnumerator LookAtTarget()
+    {
+        while (true)
+        {
+            transform.LookAt(PlayerTransform);
+            yield return null;
+        }
+    }
     private IEnumerator MoveToTarget()
     {
         float timer = 0;
         float duration = 2f;
         Vector3 SpawnPos = new Vector3(0, 70, 50);
-        while(timer < 1)
+        while (timer < 1)
         {
             transform.position = Vector3.Slerp(SpawnPos, TargetPos, timer);
-            timer += Time.deltaTime/ duration;
+            timer += Time.deltaTime / duration;
             yield return null;
         }
-        if (!isAnimated) yield break; 
+        if (!isAnimated) yield break;
     }
 
     private IEnumerator FloatAround()
@@ -44,11 +55,9 @@ public class Enemy : MonoBehaviour
         while (true)
         {
             _offset = new Vector3(Random.Range(-12f, 12f), Random.Range(5, 11f), Random.Range(10f, 20f));
-
             while (_t < dur)
             {
                 transform.position = Vector3.Lerp(transform.position, _offset, _t);
-                transform.LookAt(Vector3.zero);
                 _t += Time.deltaTime / dur;
                 yield return null;
             }
@@ -65,10 +74,15 @@ public class Enemy : MonoBehaviour
 
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("Enemy Hit OnCollision");
+    }
+
     private void TakeDamage()
     {
         health -= 1;
-        if(health <= 0)
+        if (health <= 0)
         {
             Destroy(gameObject);
         }

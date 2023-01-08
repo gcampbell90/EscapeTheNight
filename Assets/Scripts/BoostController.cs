@@ -8,10 +8,11 @@ using UnityEngine.UI;
 public class BoostController : MonoBehaviour
 {
     PlayerController playerController;
+    [SerializeField]private Light[] jetLights;
     public bool IsBoosting { get; set; }
 
     float fuel = 100f;
-    private void Awake()
+    private void Start()
     {
         playerController = GetComponent<PlayerController>();
     }
@@ -41,7 +42,6 @@ public class BoostController : MonoBehaviour
         var targetPos = originPos + new Vector3(0, 0, boostPos);
 
         var jetMat = transform.GetChild(0).GetComponent<Renderer>().material;
-        var jetLights = transform.GetComponentsInChildren<Light>();
 
         GameController.onSpeedChange?.Invoke(boostSpeed);
 
@@ -59,17 +59,18 @@ public class BoostController : MonoBehaviour
 
             jetMat.SetFloat("_BoostPower", Mathf.Lerp(0, 5, progress));
 
-            foreach (var item in jetLights)
+            foreach (var light in jetLights)
             {
-                item.intensity = Mathf.Lerp(0, 100, progress);
+                light.intensity = Mathf.Lerp(0, 100, progress);
             }
 
             progress += Time.deltaTime / duration;
             yield return null;
         }
 
-        if (IsBoosting) { 
-            IsBoosting = false; 
+        if (IsBoosting)
+        {
+            IsBoosting = false;
         }
         PlayerBoostSFX();
 
@@ -78,7 +79,6 @@ public class BoostController : MonoBehaviour
 
         while (progress <= 1f)
         {
-            //transform.position = Vector3.Lerp(transform.position, originPos, progress);
             transform.SetPositionAndRotation(
                 Vector3.Lerp(
                     transform.position,
@@ -101,7 +101,7 @@ public class BoostController : MonoBehaviour
         }
 
         GameController.onSpeedChange?.Invoke(startSpeed);
-        
+
         jetMat.SetFloat("_BoostPower", 0);
     }
     private void PlayerBoostSFX()
@@ -113,10 +113,10 @@ public class BoostController : MonoBehaviour
     //Deplete and Recharge boost bar
     private IEnumerator Boosting()
     {
-        while (IsBoosting && fuel > 0 )
+        while (IsBoosting && fuel > 0)
         {
             fuel -= Time.deltaTime * 10;
-            
+
             playerController.UpdateUI(fuel);
             yield return null;
         }
@@ -126,7 +126,7 @@ public class BoostController : MonoBehaviour
 
     private IEnumerator Refueling()
     {
-        while (!IsBoosting && fuel <=100)
+        while (!IsBoosting && fuel <= 100)
         {
             fuel += Time.deltaTime * 5f;
             playerController.UpdateUI(fuel);

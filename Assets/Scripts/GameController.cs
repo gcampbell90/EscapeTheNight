@@ -59,11 +59,11 @@ public class GameController : MonoBehaviour
         StartCoroutine(SpeedUpdate(newSpeed));
         playerController.CurrentSpeed = newSpeed;
     }
+
     private IEnumerator SpeedUpdate(float newSpeed)
     {
         var _t = 0f;
         var _dur = 1f;
-        var _progress = 0f;
         while (_t < 1f)
         {
             foreach (var chunk in chunkSpawners)
