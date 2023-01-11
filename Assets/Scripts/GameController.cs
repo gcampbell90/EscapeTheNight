@@ -4,24 +4,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using static GameController;
 
 public class GameController : MonoBehaviour
 {
     [Header("Player Setup")]
-    [SerializeField] PlayerController playerController;
     [SerializeField] private float standardSpeed_MPH;
-    [SerializeField] private float boostSpeed_MPH;
     public float StandardSpeed_MPH { get => standardSpeed_MPH; private set => standardSpeed_MPH = value; }
+
+    [SerializeField] private float boostSpeed_MPH;
     public float BoostSpeed_MPH { get => boostSpeed_MPH; private set => boostSpeed_MPH = value; }
 
     [Header("Level Setup")]
     [SerializeField] private float levelLength_Miles;
-    //Scene spawner speed
+
+    //environment chunks
     [SerializeField] private ChunkSpawner[] chunkSpawners;
-    //[SerializeField] private ChunkSpawner[] ChunkSpawners { get { return chunkSpawners; } set { ChunkSpawners = chunkSpawners; } }
 
     public float LevelLength_Miles { get => levelLength_Miles; private set => levelLength_Miles = value; }
+    
+    private GameObject endWall;
 
     //Event for when the player boosts - speeds up scene and appropriate other objects
     public delegate void OnSpeedChange(float newSpeed);
@@ -29,43 +30,63 @@ public class GameController : MonoBehaviour
 
     public static GameController Instance { get; private set; }
 
+    private EtaTracker etaTracker;
+    //implement
+    private UIController uiController;
 
     private void OnEnable()
     {
-        onSpeedChange += EnvironmentSpeedChange;
+        onSpeedChange += SpeedUpdateEvent;
     }
-
     private void OnDisable()
     {
-        onSpeedChange -= EnvironmentSpeedChange;
+        onSpeedChange -= SpeedUpdateEvent;
     }
-
     private void Awake()
     {
+        etaTracker = GetComponent<EtaTracker>();
+        uiController = GetComponent<UIController>();
+
         Instance = this;
         //Debug.Log($"StartMPH:{standardSpeed_MPH},BoostSpeed: {boostSpeed_MPH}, Length of road: {levelLength_Miles}");
     }
-
     private void Start()
     {
+        endWall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        endWall.transform.localScale = new Vector3(20, 20, 1);
+        endWall.transform.position = new Vector3(0, 0, levelLength_Miles * 1609.34f);
+        StartCoroutine(MoveWall());
         foreach (var chunk in chunkSpawners)
         {
-            chunk.movingSpeed = VelocityTracker.GetMeterPerSec(StandardSpeed_MPH);
+            chunk.movingSpeed = StandardSpeed_MPH * 0.44704f;
+        }
+        etaTracker.distance = levelLength_Miles;
+        etaTracker.speed = standardSpeed_MPH;
+    }
+
+    private IEnumerator MoveWall()
+    {
+        var _t = 0f;
+        var _dur = 1f;
+        while (_t <1f)
+        {
+            Debug.Log("Moving wall" + (etaTracker.RemainingDistance * 1609.34f));
+            endWall.transform.position = transform.position + new Vector3(0, 0, etaTracker.RemainingDistance * 1609.34f);
+            yield return null;
         }
     }
-
-    public void EnvironmentSpeedChange(float newSpeed)
+    public void SpeedUpdateEvent(float newSpeed)
     {
         StartCoroutine(SpeedUpdate(newSpeed));
-        playerController.CurrentSpeed = newSpeed;
     }
-
     private IEnumerator SpeedUpdate(float newSpeed)
     {
         var _t = 0f;
         var _dur = 1f;
         while (_t < 1f)
         {
+            etaTracker.speed = newSpeed;
+
             foreach (var chunk in chunkSpawners)
             {
                 chunk.movingSpeed = newSpeed;
@@ -74,5 +95,6 @@ public class GameController : MonoBehaviour
             yield return null;
         }
     }
+
 }
 

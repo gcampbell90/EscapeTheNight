@@ -35,8 +35,8 @@ public class BoostController : MonoBehaviour
         float duration = 0.5f;
 
         float boostPos = 2;
-        var startSpeed = GetComponent<PlayerController>().StandardSpeed;
-        var boostSpeed = GetComponent<PlayerController>().BoostSpeed;
+        var startSpeed = GameController.Instance.StandardSpeed_MPH;
+        var boostSpeed = GameController.Instance.BoostSpeed_MPH;
 
         var originPos = transform.position;
         var targetPos = originPos + new Vector3(0, 0, boostPos);
@@ -116,8 +116,7 @@ public class BoostController : MonoBehaviour
         while (IsBoosting && fuel > 0)
         {
             fuel -= Time.deltaTime * 10;
-
-            playerController.UpdateUI(fuel);
+            UIController.onBoostChange?.Invoke(fuel);
             yield return null;
         }
         IsBoosting = false;
@@ -129,7 +128,7 @@ public class BoostController : MonoBehaviour
         while (!IsBoosting && fuel <= 100)
         {
             fuel += Time.deltaTime * 5f;
-            playerController.UpdateUI(fuel);
+            UIController.onBoostChange?.Invoke(fuel);
             yield return null;
         }
     }

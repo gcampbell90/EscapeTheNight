@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class ProjectileBehaviour : MonoBehaviour
 {
@@ -16,9 +15,9 @@ public class ProjectileBehaviour : MonoBehaviour
     {
         float t = 0f;
         var pos = target.position;
-        while (t <= 2f)
+        while (t <= 5f)
         {
-            transform.position = Vector3.Lerp(transform.position, pos, t);
+            transform.position = Vector3.Lerp(transform.position, pos, t * 0.5f);
             t += Time.deltaTime;
             yield return null;
         }

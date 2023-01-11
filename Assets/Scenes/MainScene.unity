@@ -97,7 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 9cd95396f69bd4241a433ed546062824,
+    type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 3de94edfc5980c84b84706952a834cc0,
     type: 2}
 --- !u!196 &4
@@ -2139,14 +2140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5263ecdc2dc15c94da2a80a85e8ea3c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gpsInfo: {fileID: 1535028781}
-  _progressSlider: {fileID: 88858508}
-  _boostSlider: {fileID: 908775605}
-  chunkSpawners:
-  - {fileID: 1223694722}
-  - {fileID: 1901350542}
-  - {fileID: 651889433}
-  - {fileID: 651889433}
 --- !u!114 &243944087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2308,18 +2301,6 @@ MonoBehaviour:
   jetLights:
   - {fileID: 773323320}
   - {fileID: 1591131210}
---- !u!114 &243944095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132148542372534}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3293db795c144f4d8918089b138d1e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &243944096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2332,6 +2313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef8452243a9d11f4781fb72398eda993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 20
 --- !u!64 &243944100
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2857,6 +2839,7 @@ GameObject:
   m_Component:
   - component: {fileID: 312378234}
   - component: {fileID: 312378233}
+  - component: {fileID: 312378236}
   - component: {fileID: 312378235}
   m_Layer: 0
   m_Name: GameController
@@ -2877,9 +2860,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff9299219c42e346b6787d9655ad181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 243944081}
-  standardSpeed_MPH: 0
-  boostSpeed_MPH: 0
+  standardSpeed_MPH: 60
+  boostSpeed_MPH: 200
   levelLength_Miles: 1
   chunkSpawners:
   - {fileID: 1223694722}
@@ -2913,9 +2895,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a181d670bf6938447ae5f3133f98750e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 200
-  distance: 1
-  etaText: {fileID: 1535028781}
+--- !u!114 &312378236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312378232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47d01d6fd1e288343bb8c85ca6392ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gpsInfo: {fileID: 1535028781}
+  _progressSlider: {fileID: 88858508}
+  _boostSlider: {fileID: 908775605}
 --- !u!1001 &313325976
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5323,7 +5317,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &637379890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5336,7 +5330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d681181cb03a9c418545a3a44a2de1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyCount: 5
+  enemyCount: 50
   enemy: {fileID: 4322698676300097442, guid: b5c2e0d050b385e4b819a71bbe2ba884, type: 3}
   isMoving: 1
   _player: {fileID: 543450652197658636}
@@ -5491,7 +5485,7 @@ GameObject:
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &651889431
 Transform:
   m_ObjectHideFlags: 0
@@ -7997,7 +7991,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &919096832
 Transform:
   m_ObjectHideFlags: 0
@@ -8776,8 +8770,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 1054}
-  m_SizeDelta: {x: 400.40002, y: 97.46002}
+  m_AnchoredPosition: {x: 0, y: 1055.7}
+  m_SizeDelta: {x: 400.4, y: 48.472}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1038870680
 PrefabInstance:
@@ -15474,7 +15468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chunks:
   - {fileID: 1520583829239700732, guid: efe711bc93d69454f8538760e8af25df, type: 3}
-  initialSpawnCount: 12
+  initialSpawnCount: 10
   destroyZone: 20
   axis: 3
   moveDirection: {x: -1, y: 0, z: 0}
@@ -22152,8 +22146,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 977}
-  m_SizeDelta: {x: 0, y: 108.987}
+  m_AnchoredPosition: {x: 0, y: 991.7345}
+  m_SizeDelta: {x: 0, y: 79.518}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1535028781
 MonoBehaviour:
@@ -22175,7 +22169,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Distance,  ETA, Target
+  m_text: Telemetry Data
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -24412,7 +24406,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1769201961}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 11, y: 10.91, z: 0}
+  m_LocalPosition: {x: 10.011, y: 10.91, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25894,7 +25888,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1917005992
 Transform:
   m_ObjectHideFlags: 0
@@ -27664,32 +27658,32 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 5dcd5e4c65705d54a84d60017973263d,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.3532659
+      value: 0.20856129
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5dcd5e4c65705d54a84d60017973263d,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.2323862
+      value: 0.7275768
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5dcd5e4c65705d54a84d60017973263d,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.35326594
+      value: 0.2085613
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5dcd5e4c65705d54a84d60017973263d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.013
+      value: 0.001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5dcd5e4c65705d54a84d60017973263d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.444
+      value: 0.48
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5dcd5e4c65705d54a84d60017973263d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.518
+      value: -1.515
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5dcd5e4c65705d54a84d60017973263d,
         type: 3}
@@ -27934,7 +27928,6 @@ GameObject:
   - component: {fileID: 243944081}
   - component: {fileID: 243944096}
   - component: {fileID: 243944087}
-  - component: {fileID: 243944095}
   - component: {fileID: 243944092}
   - component: {fileID: 243944091}
   m_Layer: 6

@@ -1,33 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
+using static GameController;
 
 public class EtaTracker : MonoBehaviour
 {
     // speed in mph
-    public float speed;
+    public float speed { get; set; }
     // distance in miles
-    public float distance;
-    // distance traveled so far
-    private float distanceTraveled = 0f;
+    public float distance { get; set; }
 
-    public TextMeshProUGUI etaText;
+    private float distanceTraveled = 0f;
+    private float goalTime;
+    public float RemainingDistance { get; set; }
+    float eta;
+
+    UIController uiController { get; set; }
+
+    private void Start()
+    {
+        uiController = GetComponent<UIController>();
+        goalTime = (speed / distance) * 0.8f;
+    }
 
     void Update()
     {
-        // update the distance traveled based on the speed and elapsed time
         distanceTraveled += speed * Time.deltaTime / 3600f;
-        // calculate the remaining distance
-        float remainingDistance = distance - distanceTraveled;
-        // calculate the ETA based on the remaining distance and speed
-        float eta = remainingDistance / speed;
-        // convert the ETA from hours to minutes
-        int etaMinutes = (int)(eta * 60);
-        // calculate the number of seconds
-        int etaSeconds = (int)((eta * 60 - etaMinutes) * 60);
-        etaText.text = etaMinutes + " minutes" + " " + etaSeconds + " seconds";
-        // print the ETA value to the console
-        //Debug.Log(etaMinutes + " minutes" + " " + etaSeconds + " seconds");
+        RemainingDistance = distance - distanceTraveled;
+        eta = RemainingDistance / speed;
+        int etaSeconds = (int)((eta * 60) * 60);
+
+        goalTime -= Time.deltaTime;
+
+        uiController.UpdateUI(etaSeconds, distanceTraveled);
+        
+        if (etaSeconds <= 0)
+        {
+            Debug.Log("Times Up");
+        }
     }
 }
