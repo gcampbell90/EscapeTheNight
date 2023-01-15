@@ -27,7 +27,6 @@ namespace AmazingAssets.CurvedWorld.Example
         void Awake()
         {
             initialSpawnCount = initialSpawnCount > chunks.Length ? initialSpawnCount : chunks.Length;
-
             
             int chunkIndex = 0;
             for (int i = 0; i < initialSpawnCount; i++)

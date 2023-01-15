@@ -7,8 +7,10 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    [Range(0,100)]
+    [SerializeField] private float goalTimePercentage;
     [Header("Player Setup")]
-    [SerializeField] private float standardSpeed_MPH;
+    [SerializeField]private float standardSpeed_MPH;
     public float StandardSpeed_MPH { get => standardSpeed_MPH; private set => standardSpeed_MPH = value; }
 
     [SerializeField] private float boostSpeed_MPH;
@@ -66,12 +68,10 @@ public class GameController : MonoBehaviour
 
     private IEnumerator MoveWall()
     {
-        var _t = 0f;
-        var _dur = 1f;
-        while (_t <1f)
+        while (true)
         {
-            Debug.Log("Moving wall" + (etaTracker.RemainingDistance * 1609.34f));
             endWall.transform.position = transform.position + new Vector3(0, 0, etaTracker.RemainingDistance * 1609.34f);
+            //Debug.Log("Moving wall" + (etaTracker.RemainingDistance * 1609.34f));
             yield return null;
         }
     }

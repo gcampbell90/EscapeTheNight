@@ -1,36 +1,41 @@
-using AmazingAssets.CurvedWorld.Example;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BoostController : MonoBehaviour
 {
-    PlayerController playerController;
-    [SerializeField]private Light[] jetLights;
-    public bool IsBoosting { get; set; }
+    public delegate void BoostControllerDelegate(bool boost);
+    public static BoostControllerDelegate boostEvent;
 
+    [SerializeField] private Light[] jetLights;
     float fuel = 100f;
-    private void Start()
+    private bool IsBoosting = false;
+
+
+    private void OnEnable()
     {
-        playerController = GetComponent<PlayerController>();
+        boostEvent += ActivateBooster;
+    }
+    private void OnDisable()
+    {
+        boostEvent -= ActivateBooster;
     }
 
-    public void Booster()
+    public void ActivateBooster(bool boost)
     {
-        IsBoosting = true;
+        IsBoosting = boost;
+
+        if (boost)
+        {
+            //play boost animation
+            StartCoroutine(BoostCoroutine());
+        }
+    }
+    private IEnumerator BoostCoroutine()
+    {
+        PlayBoostSFX();
         //use fuel
-        StartCoroutine(Boosting());
-
-        //play boost animation
-        StartCoroutine(Boost());
-
-    }
-    private IEnumerator Boost()
-    {
-        PlayerBoostSFX();
-
+        StartCoroutine(DepleteFuel());
+        StartCoroutine(AnimateLights());
         float progress = 0f;
         float duration = 0.5f;
 
@@ -45,7 +50,7 @@ public class BoostController : MonoBehaviour
 
         GameController.onSpeedChange?.Invoke(boostSpeed);
 
-        while (!Input.GetKeyUp(KeyCode.W) && IsBoosting)
+        while (IsBoosting)
         {
             transform.SetPositionAndRotation(
             Vector3.Lerp(
@@ -59,21 +64,9 @@ public class BoostController : MonoBehaviour
 
             jetMat.SetFloat("_BoostPower", Mathf.Lerp(0, 5, progress));
 
-            foreach (var light in jetLights)
-            {
-                light.intensity = Mathf.Lerp(0, 100, progress);
-            }
-
             progress += Time.deltaTime / duration;
             yield return null;
         }
-
-        if (IsBoosting)
-        {
-            IsBoosting = false;
-        }
-        PlayerBoostSFX();
-
         duration = 0.25f;
         progress = 0f;
 
@@ -90,12 +83,6 @@ public class BoostController : MonoBehaviour
                     progress));
 
             jetMat.SetFloat("_BoostPower", Mathf.Lerp(jetMat.GetFloat("_BoostPower"), 0, progress));
-
-            foreach (var item in jetLights)
-            {
-                item.intensity = Mathf.Lerp(item.intensity, 0, progress);
-            }
-
             progress += Time.deltaTime / duration;
             yield return null;
         }
@@ -104,14 +91,30 @@ public class BoostController : MonoBehaviour
 
         jetMat.SetFloat("_BoostPower", 0);
     }
-    private void PlayerBoostSFX()
+    private void PlayBoostSFX()
     {
         var audioController = GetComponent<AudioSourceController>();
         audioController.ToggleJetSFX();
     }
+    private IEnumerator AnimateLights()
+    {
+        var targetValue = Random.Range(0.5f, 20f);
+
+        float duration = 1f;
+        float progress = 0f;
+
+        while (progress <= 1f && IsBoosting)
+        {
+            jetLights[0].intensity = Mathf.Lerp(jetLights[0].intensity, targetValue, Time.deltaTime);
+            progress += Time.deltaTime / duration;
+            yield return null;
+        }
+
+        jetLights[0].intensity = 0f;
+    }
 
     //Deplete and Recharge boost bar
-    private IEnumerator Boosting()
+    private IEnumerator DepleteFuel()
     {
         while (IsBoosting && fuel > 0)
         {
@@ -120,10 +123,9 @@ public class BoostController : MonoBehaviour
             yield return null;
         }
         IsBoosting = false;
-        StartCoroutine(Refueling());
+        StartCoroutine(Refuel());
     }
-
-    private IEnumerator Refueling()
+    private IEnumerator Refuel()
     {
         while (!IsBoosting && fuel <= 100)
         {
