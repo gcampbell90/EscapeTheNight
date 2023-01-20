@@ -98,16 +98,21 @@ public class BoostController : MonoBehaviour
     }
     private IEnumerator AnimateLights()
     {
-        var targetValue = Random.Range(0.5f, 20f);
+        float minIntensity = Random.Range(10f, 30f);
+        float maxIntensity = Random.Range(50f, 100f);
 
-        float duration = 1f;
-        float progress = 0f;
+        float duration = 0.1f;
+        //float progress = 0f;
 
-        while (progress <= 1f && IsBoosting)
+        while (IsBoosting)
         {
-            jetLights[0].intensity = Mathf.Lerp(jetLights[0].intensity, targetValue, Time.deltaTime);
-            progress += Time.deltaTime / duration;
-            yield return null;
+            float randomValue = Random.Range(minIntensity, maxIntensity);
+
+            //jetLights[0].intensity = Mathf.Lerp(jetLights[0].intensity, targetValue, Time.deltaTime);
+            jetLights[0].intensity = randomValue;
+            //progress += Time.deltaTime / duration;
+
+            yield return new WaitForSeconds(duration);
         }
 
         jetLights[0].intensity = 0f;
