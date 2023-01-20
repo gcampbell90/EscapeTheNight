@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour
 
     public static GameController Instance { get; private set; }
 
-    private EtaTracker etaTracker;
+    private TelemetryCalculatorBehaviour etaTracker;
     //implement
     private UIController uiController;
 
@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour
     }
     private void Awake()
     {
-        etaTracker = GetComponent<EtaTracker>();
+        etaTracker = GetComponent<TelemetryCalculatorBehaviour>();
         uiController = GetComponent<UIController>();
 
         Instance = this;

@@ -5,7 +5,7 @@ using System.Threading;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class AimController : MonoBehaviour
+public class WeaponBehaviour : MonoBehaviour
 {
     [SerializeField] Camera aimCamera;
     Camera mainCamera;

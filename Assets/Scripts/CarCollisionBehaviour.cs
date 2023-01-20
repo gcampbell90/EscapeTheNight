@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CarCollision : MonoBehaviour
+public class CarCollisionBehaviour : MonoBehaviour
 {
     MeshCollider _collider;
 

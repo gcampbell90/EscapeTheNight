@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyFireProjectile : MonoBehaviour
+public class EnemyAttackBehaviour : MonoBehaviour
 {
     public float fireRate;
     public float fireRange = 10f;
@@ -10,6 +10,7 @@ public class EnemyFireProjectile : MonoBehaviour
     private float fireTimer = 0f;
     private Transform playerTransform;
 
+    //TODO: Optimise and refactor to not use update method, cache player postion with one findgameobject call and store for akk enemies to access
     void Start()
     {
         fireRate = Random.Range(1.0f, 2.0f);

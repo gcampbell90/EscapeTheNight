@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
-public class ScrollingText : MonoBehaviour
+public class ScrollingTextBehaviour : MonoBehaviour
 {
     [SerializeField] private TMP_Text scrollingText;
     [SerializeField] private float scrollSpeed = 0.1f;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioSourceController : MonoBehaviour
+public class PlayerAudioBehaviour : MonoBehaviour
 {
     [SerializeField] AudioClip engineRunningClip;
     [SerializeField] AudioClip jetStartingClip;

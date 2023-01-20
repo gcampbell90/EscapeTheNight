@@ -2,8 +2,8 @@
 
 internal class TriggerBehaviour : MonoBehaviour, ITriggerBehaviour
 {
-    CarCollision CarCollision { get; set; }
-    public void SetEvent(CarCollision _carCollisionScript)
+    CarCollisionBehaviour CarCollision { get; set; }
+    public void SetEvent(CarCollisionBehaviour _carCollisionScript)
     {
         CarCollision = _carCollisionScript;
     }
