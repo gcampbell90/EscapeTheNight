@@ -22,11 +22,13 @@ public class AimController : MonoBehaviour
     [SerializeField] Transform gun1_Pivot;
     [SerializeField] Transform gun1_Pivot1;
     [SerializeField] ParticleSystem MuzzleFlashL;
+    [SerializeField] AudioSource gunshotSoundL;
 
     //Gun System 2
     [SerializeField] Transform gun2_Pivot;
     [SerializeField] Transform gun2_Pivot1;
     [SerializeField] ParticleSystem MuzzleFlashR;
+    [SerializeField] AudioSource gunshotSoundR;
 
     //UI
     [SerializeField] GameObject gun_UI, main_UI;
@@ -131,8 +133,13 @@ public class AimController : MonoBehaviour
             var shootDirectionL = aimCamera.transform.TransformDirection(Vector3.forward);
             var shootDirectionR = aimCamera.transform.TransformDirection(Vector3.forward);
 
+            //Visual FX
             MuzzleFlashL.Play();
             MuzzleFlashR.Play();
+
+            //Sound FX
+            gunshotSoundL.Play();
+            gunshotSoundR.Play();
 
             RaycastHit hitL;
             RaycastHit hitR;

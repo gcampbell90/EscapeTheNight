@@ -12,6 +12,11 @@ public class Enemy : MonoBehaviour
     public Vector3 TargetPos { get; set; }
     public Transform PlayerTransform { get; set; }
 
+    [SerializeField] ParticleSystem deathExplosion;
+    [SerializeField] AudioSource explosionSound;
+
+    private bool isDestroyed = false;
+
     private void Start()
     {
         StartCoroutine(MoveToTarget());
@@ -69,9 +74,15 @@ public class Enemy : MonoBehaviour
 
     void HitByRay()
     {
-        Debug.Log($"{gameObject.name} was hit by a Ray");
-        TakeDamage();
-
+        if (isDestroyed != true)
+        {
+            Debug.Log($"{gameObject.name} was hit by a Ray");
+            TakeDamage();
+        }
+        else
+        {
+            return;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -84,8 +95,17 @@ public class Enemy : MonoBehaviour
         health -= 1;
         if (health <= 0)
         {
-            Destroy(gameObject);
+            StartCoroutine(DroneDeath());
         }
+    }
+
+    IEnumerator DroneDeath()
+    {
+        explosionSound.Play();
+        deathExplosion.Play();
+        yield return new WaitForSeconds(0.15f);
+        isDestroyed = true;
+        Destroy(gameObject);
     }
 
     private void OnDestroy()
