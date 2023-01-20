@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovementBehaviour : MonoBehaviour
 {
     //Movement
     bool dir;
@@ -72,11 +72,11 @@ public class PlayerMovement : MonoBehaviour
         //boost
         if (Input.GetKeyDown(KeyCode.W))
         {
-            BoostController.boostEvent(true);
+            BoostBehaviour.boostEvent(true);
         }
         else if (Input.GetKeyUp(KeyCode.W))
         {
-            BoostController.boostEvent(false);
+            BoostBehaviour.boostEvent(false);
         }
 
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, laneChangeSpeed * Time.deltaTime);
@@ -95,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void PlayerTurnSFX()
     {
-        var audioController = GetComponent<AudioSourceController>();
+        var audioController = GetComponent<PlayerAudioBehaviour>();
         audioController.PlayTireScreech();
     }
 }

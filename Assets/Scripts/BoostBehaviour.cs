@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class BoostController : MonoBehaviour
+public class BoostBehaviour : MonoBehaviour
 {
     public delegate void BoostControllerDelegate(bool boost);
     public static BoostControllerDelegate boostEvent;
@@ -93,7 +93,7 @@ public class BoostController : MonoBehaviour
     }
     private void PlayBoostSFX()
     {
-        var audioController = GetComponent<AudioSourceController>();
+        var audioController = GetComponent<PlayerAudioBehaviour>();
         audioController.ToggleJetSFX();
     }
     private IEnumerator AnimateLights()

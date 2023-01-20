@@ -5,7 +5,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Enemy : MonoBehaviour
+public class EnemyBehaviour : MonoBehaviour
 {
     private int health = 10;
     private bool isAnimated = false;

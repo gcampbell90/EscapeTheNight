@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using static GameController;
 
-public class EtaTracker : MonoBehaviour
+public class TelemetryCalculatorBehaviour : MonoBehaviour
 {
     // speed in mph
     public float speed { get; set; }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour
+public class EnemySpawnManager : MonoBehaviour
 {
     [SerializeField]private int enemyCount;
     [SerializeField] GameObject enemy;
@@ -27,9 +27,9 @@ public class EnemySpawner : MonoBehaviour
             _pos.z = 20;
 
             var _enemy = Instantiate(enemy);
-            _enemy.GetComponent<Enemy>().TargetPos = _pos;
-            _enemy.GetComponent<Enemy>().PlayerTransform = _player;
-            if (isMoving) _enemy.GetComponent<Enemy>().Animate(); continue;
+            _enemy.GetComponent<EnemyBehaviour>().TargetPos = _pos;
+            _enemy.GetComponent<EnemyBehaviour>().PlayerTransform = _player;
+            if (isMoving) _enemy.GetComponent<EnemyBehaviour>().Animate(); continue;
             
         }
     }

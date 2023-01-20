@@ -8,10 +8,10 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerMovement))]
-[RequireComponent(typeof(BoostController))]
+[RequireComponent(typeof(PlayerMovementBehaviour))]
+[RequireComponent(typeof(BoostBehaviour))]
 
-public class PlayerController : MonoBehaviour
+public class PlayerCollisionBehaviour : MonoBehaviour
 {
     private void OnTriggerEnter(Collider collision)
     {
