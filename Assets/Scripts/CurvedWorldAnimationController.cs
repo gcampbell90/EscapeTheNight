@@ -1,52 +1,55 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CurvedWorldAnimationController : MonoBehaviour
 {
     public AmazingAssets.CurvedWorld.CurvedWorldController CW_Controller { get; private set; }
 
-    [Range(-10,0)]
-    public float Xmin, Ymin;
+    [Range(-10, 0)]
+    public float Xmin;
+    [Range(0, 10)]
+    public float Xmax;
+    [Range(-10, 0)]
+    public float Ymin;
+    [Range(0, 10)]
+    public float Ymax;
 
-    [Range(0,10)]
-    public float Xmax, Ymax;
+    [SerializeField] bool curvedWorldToggle;
 
     private void Awake()
     {
-        CW_Controller= GetComponent<AmazingAssets.CurvedWorld.CurvedWorldController>();
-
+        CW_Controller = GetComponent<AmazingAssets.CurvedWorld.CurvedWorldController>();
     }
 
     private void Start()
     {
-        StartCoroutine(AnimateCurvedWorld());
+        if (curvedWorldToggle) StartCoroutine(AnimateCurvedWorld());
     }
 
-    bool toggle = false;
     private IEnumerator AnimateCurvedWorld()
     {
-        toggle = !toggle;
 
-        float progress = 0f;
-        float duration = 5f;
-
-        var currHorizontalSize = CW_Controller.bendHorizontalSize;
-        var currVerticalSize = CW_Controller.bendHorizontalSize;
-
-        float bendSizeX = toggle ? Xmin : Xmax;
-        float bendSizeY = toggle ? Ymin : Ymax;
-
-        while (progress <= 1f)
+        while (true)
         {
-            CW_Controller.SetBendHorizontalSize(Mathf.Lerp(currHorizontalSize, bendSizeX, progress));
-            CW_Controller.SetBendVerticalSize(Mathf.Lerp(currVerticalSize, bendSizeY, progress));
+            float currHorizontalSize = CW_Controller.bendHorizontalSize;
+            float currVerticalSize = CW_Controller.bendVerticalSize;
 
-            progress += Time.deltaTime / duration;
+            float progress = 0f;
+            float duration = 5f;
+
+            float bendSizeX = Random.Range(Xmin, Xmax);
+            float bendSizeY = Random.Range(Ymin, Ymax);
+
+            while (progress < 1f)
+            {
+                CW_Controller.SetBendHorizontalSize(Mathf.Lerp(currHorizontalSize, bendSizeX, progress));
+                CW_Controller.SetBendVerticalSize(Mathf.Lerp(currVerticalSize, bendSizeY, progress));
+
+                progress += Time.deltaTime / duration;
+                yield return null;
+            }
+
             yield return null;
         }
-
-        StartCoroutine(AnimateCurvedWorld());
     }
 }

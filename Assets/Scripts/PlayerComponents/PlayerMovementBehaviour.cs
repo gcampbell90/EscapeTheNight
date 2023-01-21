@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovementBehaviour : MonoBehaviour
@@ -18,7 +19,7 @@ public class PlayerMovementBehaviour : MonoBehaviour
     public Vector3 TartgetPos => SetTargetPosition();
     public Quaternion TargetRot => SetTargetRotation();
 
-    [SerializeField]private float laneChangeSpeed; 
+    [SerializeField] private float laneChangeSpeed;
 
     private void Start()
     {
@@ -30,42 +31,40 @@ public class PlayerMovementBehaviour : MonoBehaviour
     }
     private void HandleInput()
     {
+
         //left
         if (Input.GetKeyDown(KeyCode.A))
         {
-            if (currLanePosition == CurrentPos.middle)
+            switch (currLanePosition)
             {
-                targetPosition = leftPosition;
-                currLanePosition = CurrentPos.left;
-            }
-            else if (currLanePosition == CurrentPos.right)
-            {
-                targetPosition = middlePosition;
-                currLanePosition = CurrentPos.middle;
-            }
-            else
-            {
-                return;
+                case CurrentPos.middle:
+                    targetPosition = leftPosition;
+                    currLanePosition = CurrentPos.left;
+                    break;
+                case CurrentPos.right:
+                    targetPosition = middlePosition;
+                    currLanePosition = CurrentPos.middle;
+                    break;
+                default:
+                    return;
             }
         }
 
         //right
         if (Input.GetKeyDown(KeyCode.D))
         {
-            if (currLanePosition == CurrentPos.middle)
+            switch (currLanePosition)
             {
-                targetPosition = rightPosition;
-                currLanePosition = CurrentPos.right;
-
-            }
-            else if (currLanePosition == CurrentPos.left)
-            {
-                targetPosition = middlePosition;
-                currLanePosition = CurrentPos.middle;
-            }
-            else
-            {
-                return;
+                case CurrentPos.middle:
+                    targetPosition = rightPosition;
+                    currLanePosition = CurrentPos.right;
+                    break;
+                case CurrentPos.left:
+                    targetPosition = middlePosition;
+                    currLanePosition = CurrentPos.middle;
+                    break;
+                default:
+                    return;
             }
         }
 
@@ -82,9 +81,17 @@ public class PlayerMovementBehaviour : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, laneChangeSpeed * Time.deltaTime);
 
     }
+
+    public void ResetPos()
+    {
+        targetPosition = middlePosition;
+        currLanePosition = CurrentPos.middle;
+    }
+
+
     Vector3 SetTargetPosition()
     {
-        pos = dir ? -4 : 4 ;
+        pos = dir ? -4 : 4;
         return new Vector3(pos, 0, 0);
     }
     Quaternion SetTargetRotation()

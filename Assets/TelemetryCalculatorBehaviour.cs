@@ -34,7 +34,7 @@ public class TelemetryCalculatorBehaviour : MonoBehaviour
 
         goalTime -= Time.deltaTime;
 
-        uiController.UpdateUI(etaSeconds, distanceTraveled);
+        uiController.UpdateUI(speed, etaSeconds, distanceTraveled);
         
         if (etaSeconds <= 0)
         {

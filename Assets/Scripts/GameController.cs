@@ -7,14 +7,17 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    [Range(0,100)]
+    [Range(0, 100)]
     [SerializeField] private float goalTimePercentage;
     [Header("Player Setup")]
-    [SerializeField]private float standardSpeed_MPH;
+    [SerializeField] private float standardSpeed_MPH;
     public float StandardSpeed_MPH { get => standardSpeed_MPH; private set => standardSpeed_MPH = value; }
 
     [SerializeField] private float boostSpeed_MPH;
     public float BoostSpeed_MPH { get => boostSpeed_MPH; private set => boostSpeed_MPH = value; }
+
+    [SerializeField] private float penaltySpeed;
+    public float PenaltySpeed { get => penaltySpeed; private set => penaltySpeed = value; }
 
     [Header("Level Setup")]
     [SerializeField] private float levelLength_Miles;
@@ -23,7 +26,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private ChunkSpawner[] chunkSpawners;
 
     public float LevelLength_Miles { get => levelLength_Miles; private set => levelLength_Miles = value; }
-    
+
     private GameObject endWall;
 
     //Event for when the player boosts - speeds up scene and appropriate other objects
@@ -33,6 +36,7 @@ public class GameController : MonoBehaviour
     public static GameController Instance { get; private set; }
 
     private TelemetryCalculatorBehaviour etaTracker;
+
     //implement
     private UIController uiController;
 
@@ -57,6 +61,7 @@ public class GameController : MonoBehaviour
         endWall = GameObject.CreatePrimitive(PrimitiveType.Cube);
         endWall.transform.localScale = new Vector3(20, 20, 1);
         endWall.transform.position = new Vector3(0, 0, levelLength_Miles * 1609.34f);
+
         StartCoroutine(MoveWall());
         foreach (var chunk in chunkSpawners)
         {
@@ -89,7 +94,7 @@ public class GameController : MonoBehaviour
 
             foreach (var chunk in chunkSpawners)
             {
-                chunk.movingSpeed = newSpeed;
+                chunk.movingSpeed = newSpeed * 0.44704f;
                 _t += Time.deltaTime / _dur;
             }
             yield return null;

@@ -10,6 +10,7 @@ public class UIController : MonoBehaviour
 {
     //UI
     [SerializeField] private TextMeshProUGUI _gpsInfo;
+    [SerializeField] private TextMeshProUGUI _speedDial;
     [SerializeField] private Slider _progressSlider;
     [SerializeField] private Slider _boostSlider;
 
@@ -25,11 +26,13 @@ public class UIController : MonoBehaviour
     {
         onBoostChange -= UpdateBoostBar;
     }
-    public void UpdateUI(float etaSecs, float progress)
+    public void UpdateUI(float speed, float etaSecs, float progress)
     {
         TimeSpan time = TimeSpan.FromSeconds(etaSecs);
+
         _gpsInfo.text = $"{time}";
         _progressSlider.value = progress;
+        _speedDial.text = $"{speed}";
     }
     public void UpdateBoostBar(float fuel)
     {

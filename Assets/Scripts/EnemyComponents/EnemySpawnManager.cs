@@ -29,8 +29,7 @@ public class EnemySpawnManager : MonoBehaviour
             var _enemy = Instantiate(enemy);
             _enemy.GetComponent<EnemyBehaviour>().TargetPos = _pos;
             _enemy.GetComponent<EnemyBehaviour>().PlayerTransform = _player;
-            if (isMoving) _enemy.GetComponent<EnemyBehaviour>().Animate(); continue;
-            
+            if (isMoving) _enemy.GetComponent<EnemyBehaviour>().Animate(); continue;   
         }
     }
 }

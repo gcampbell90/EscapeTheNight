@@ -38,8 +38,6 @@ public class WeaponBehaviour : MonoBehaviour
 
     [SerializeField] GameObject ImpactEffect;
 
-    [SerializeField] Transform target;
-
     //use unscaled time to avoid input being influenced by slowed timescale 
     float timer = 0f;
     bool isFiring;
@@ -63,6 +61,7 @@ public class WeaponBehaviour : MonoBehaviour
             mainCamera.enabled = !mainCamera.enabled;
             aimCamera.enabled = !aimCamera.enabled;
         }
+
         if (mainCamera.enabled == false)
         {
             FollowMouse();
