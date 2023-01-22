@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour
 
     public float LevelLength_Miles { get => levelLength_Miles; private set => levelLength_Miles = value; }
 
-    private GameObject endWall;
+    [SerializeField]private GameObject endWallPrefab;
 
     //Event for when the player boosts - speeds up scene and appropriate other objects
     public delegate void OnSpeedChange(float newSpeed);
@@ -58,11 +58,11 @@ public class GameController : MonoBehaviour
     }
     private void Start()
     {
-        endWall = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        endWall.transform.localScale = new Vector3(20, 20, 1);
-        endWall.transform.position = new Vector3(0, 0, levelLength_Miles * 1609.34f);
+        var wallObj = Instantiate(endWallPrefab);
+        //endWallPrefab.transform.localScale = new Vector3(20, 20, 1);
+        endWallPrefab.transform.position = new Vector3(0, 0, levelLength_Miles * 1609.34f);
 
-        StartCoroutine(MoveWall());
+        StartCoroutine(MoveWall(wallObj));
         foreach (var chunk in chunkSpawners)
         {
             chunk.movingSpeed = StandardSpeed_MPH * 0.44704f;
@@ -71,11 +71,11 @@ public class GameController : MonoBehaviour
         etaTracker.speed = standardSpeed_MPH;
     }
 
-    private IEnumerator MoveWall()
+    private IEnumerator MoveWall(GameObject wallObj)
     {
         while (true)
         {
-            endWall.transform.position = transform.position + new Vector3(0, 0, etaTracker.RemainingDistance * 1609.34f);
+            wallObj.transform.position = transform.position + new Vector3(0, 0, etaTracker.RemainingDistance * 1609.34f);
             //Debug.Log("Moving wall" + (etaTracker.RemainingDistance * 1609.34f));
             yield return null;
         }
