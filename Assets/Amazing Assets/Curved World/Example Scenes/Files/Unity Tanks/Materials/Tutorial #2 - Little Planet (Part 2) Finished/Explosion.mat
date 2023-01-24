@@ -10,10 +10,10 @@ Material:
   m_Name: Explosion
   m_Shader: {fileID: 4800000, guid: 37639dc9dfcb02e418de063aa605d992, type: 3}
   m_ValidKeywords:
-  - CURVEDWORLD_BEND_ID_1
   - CURVEDWORLD_NORMAL_TRANSFORMATION_ON
   - _EMISSION
   m_InvalidKeywords:
+  - CURVEDWORLD_BEND_ID_1
   - CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0

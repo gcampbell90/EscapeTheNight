@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Threading.Tasks;
 
 public class ScrollingTextBehaviour : MonoBehaviour
 {
@@ -24,10 +25,10 @@ public class ScrollingTextBehaviour : MonoBehaviour
         textToShow = text;
         scrollingText.text = "";
         currentIndex = 0;
-        InvokeRepeating("UpdateText", 0f, scrollSpeed);
+        InvokeRepeating("UpdateTextAsync", 0f, scrollSpeed);
     }
 
-    private void UpdateText()
+    private async Task UpdateTextAsync()
     {
         scrollingText.text += textToShow[currentIndex];
         currentIndex++;
@@ -36,18 +37,22 @@ public class ScrollingTextBehaviour : MonoBehaviour
         {
             CancelInvoke();
             StartCoroutine(FadeText());
+
+            //TODO move this from this method to gamecontroller? Invoke via event from here
+            await SceneLoadManager.Instance.LoadMainSceneAsync();
             return;
         }
         if (textToShow[currentIndex] == ',' || textToShow[currentIndex] == '.')
         {
             CancelInvoke();
-            InvokeRepeating("UpdateText", delay, scrollSpeed);
+            InvokeRepeating("UpdateTextAsync", delay, scrollSpeed);
         }
     }
 
     private IEnumerator FadeCanvas()
     {
         float elapsedTime = 0f;
+
         while (elapsedTime < fadeDuration)
         {
             canvasGroup.alpha = 1 - (elapsedTime / fadeDuration);

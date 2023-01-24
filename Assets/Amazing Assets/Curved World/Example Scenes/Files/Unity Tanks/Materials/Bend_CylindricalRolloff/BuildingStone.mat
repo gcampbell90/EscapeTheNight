@@ -10,9 +10,9 @@ Material:
   m_Name: BuildingStone
   m_Shader: {fileID: 4800000, guid: 37639dc9dfcb02e418de063aa605d992, type: 3}
   m_ValidKeywords:
-  - CURVEDWORLD_BEND_ID_1
   - CURVEDWORLD_NORMAL_TRANSFORMATION_ON
   m_InvalidKeywords:
+  - CURVEDWORLD_BEND_ID_1
   - CURVEDWORLD_BEND_TYPE_CYLINDRICALROLLOFF_Z
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0

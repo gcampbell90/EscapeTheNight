@@ -23,5 +23,4 @@ public class PlayerCollisionBehaviour : MonoBehaviour
         GameController.onSpeedChange?.Invoke(penaltySpeed);
         movementBehaviour.ResetPos();
     }
-
 }

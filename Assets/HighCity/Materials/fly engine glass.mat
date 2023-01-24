@@ -10,7 +10,6 @@ Material:
   m_Name: fly engine glass
   m_Shader: {fileID: 4800000, guid: 37639dc9dfcb02e418de063aa605d992, type: 3}
   m_ValidKeywords:
-  - CURVEDWORLD_BEND_ID_1
   - CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE
   - _ALPHAPREMULTIPLY_ON
   - _EMISSION
@@ -19,7 +18,8 @@ Material:
   - _OCCLUSIONMAP
   - _SPECULAR_SETUP
   - _SURFACE_TYPE_TRANSPARENT
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - CURVEDWORLD_BEND_ID_1
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
