@@ -4,11 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class GameController : MonoBehaviour
 {
-    [Range(0, 100)]
+    [Range(70, 100)]
     [SerializeField] private float goalTimePercentage;
+    public float GoalTimePercentage { get => goalTimePercentage; private set => goalTimePercentage = value; }
+
     [Header("Player Setup")]
     [SerializeField] private float standardSpeed_MPH;
     public float StandardSpeed_MPH { get => standardSpeed_MPH; private set => standardSpeed_MPH = value; }
@@ -35,10 +38,10 @@ public class GameController : MonoBehaviour
 
     public static GameController Instance { get; private set; }
 
-    private TelemetryCalculatorBehaviour etaTracker;
+    public TelemetryCalculatorBehaviour TelemetryTracker { get; set; } 
 
-    //implement
-    private UIController uiController;
+    //delete?
+    //private UIController uiController;
 
     private void OnEnable()
     {
@@ -48,36 +51,24 @@ public class GameController : MonoBehaviour
     {
         onSpeedChange -= SpeedUpdateEvent;
     }
+
     private void Awake()
     {
-        etaTracker = GetComponent<TelemetryCalculatorBehaviour>();
-        uiController = GetComponent<UIController>();
+        TelemetryTracker = GetComponent<TelemetryCalculatorBehaviour>();
+        //uiController = GetComponent<UIController>();
 
         Instance = this;
         //Debug.Log($"StartMPH:{standardSpeed_MPH},BoostSpeed: {boostSpeed_MPH}, Length of road: {levelLength_Miles}");
     }
     private void Start()
     {
-        StartCoroutine(MoveWall());
+        var gateSpawnPos = new Vector3(0, 0, LevelLength_Miles * 1609.34f);
+
+        Instantiate(endWallPrefab, gateSpawnPos, Quaternion.identity);
+
         foreach (var chunk in chunkSpawners)
         {
             chunk.movingSpeed = StandardSpeed_MPH * 0.44704f;
-        }
-        etaTracker.distance = levelLength_Miles;
-        etaTracker.speed = standardSpeed_MPH;
-    }
-
-    private IEnumerator MoveWall()
-    {
-        var wallObj = Instantiate(endWallPrefab);
-
-        wallObj.transform.position = new Vector3(0, 0, levelLength_Miles * 1609.34f);
-
-        while (true)
-        {
-            wallObj.transform.position = transform.position + new Vector3(0, 0, etaTracker.RemainingDistance * 1609.34f);
-            //Debug.Log("Moving wall" + (etaTracker.RemainingDistance * 1609.34f));
-            yield return null;
         }
     }
 
@@ -92,7 +83,7 @@ public class GameController : MonoBehaviour
         var _dur = 1f;
         while (_t < 1f)
         {
-            etaTracker.speed = newSpeed;
+            TelemetryTracker.speed = newSpeed;
 
             foreach (var chunk in chunkSpawners)
             {

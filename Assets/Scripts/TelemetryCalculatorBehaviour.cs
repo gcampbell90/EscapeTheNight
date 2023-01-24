@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -13,29 +14,40 @@ public class TelemetryCalculatorBehaviour : MonoBehaviour
     public float distance { get; set; }
 
     private float distanceTraveled = 0f;
-    private float goalTime;
     public float RemainingDistance { get; set; }
-    float eta;
 
+    float eta;
+    private float goalTime;
+
+    int etaSeconds;
+    float goalTimeSeconds;
     UIController uiController { get; set; }
 
     private void Start()
     {
         uiController = GetComponent<UIController>();
-        goalTime = (speed / distance) * 0.8f;
+
+        distance = Instance.LevelLength_Miles;
+        speed = Instance.StandardSpeed_MPH;
+
+        RemainingDistance = distance - distanceTraveled;
+
+        eta = RemainingDistance / speed;
+        goalTime = eta * (Instance.GoalTimePercentage / 100);
     }
 
     void Update()
     {
         distanceTraveled += speed * Time.deltaTime / 3600f;
         RemainingDistance = distance - distanceTraveled;
-        eta = RemainingDistance / speed;
-        int etaSeconds = (int)((eta * 60) * 60);
 
         goalTime -= Time.deltaTime;
 
-        uiController.UpdateUI(speed, etaSeconds, distanceTraveled);
-        
+        etaSeconds = (int)((eta * 60) * 60);
+        goalTimeSeconds = (int)((goalTime * 60) * 60);
+        var progress = distance / distanceTraveled;
+        uiController.UpdateUI(speed, etaSeconds, goalTimeSeconds, progress);
+
         if (etaSeconds <= 0)
         {
             Debug.Log("Times Up");
