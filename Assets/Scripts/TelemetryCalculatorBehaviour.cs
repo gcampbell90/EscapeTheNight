@@ -14,43 +14,53 @@ public class TelemetryCalculatorBehaviour : MonoBehaviour
     public float distance { get; set; }
 
     private float distanceTraveled = 0f;
-    public float RemainingDistance { get; set; }
+    public float RemainingDistance
+    {
+        get
+        {
+            return distance - distanceTraveled;
+        }
+        set
+        {
+            distance = value;
+        }
+    }
 
-    float eta;
+    private float eta;
     private float goalTime;
 
     int etaSeconds;
     float goalTimeSeconds;
-    UIController uiController { get; set; }
 
     private void Start()
     {
-        uiController = GetComponent<UIController>();
-
         distance = Instance.LevelLength_Miles;
         speed = Instance.StandardSpeed_MPH;
 
-        RemainingDistance = distance - distanceTraveled;
-
-        eta = RemainingDistance / speed;
-        goalTime = eta * (Instance.GoalTimePercentage / 100);
+        eta = distance / 100;
+        goalTime = eta;
     }
 
     void Update()
     {
         distanceTraveled += speed * Time.deltaTime / 3600f;
-        RemainingDistance = distance - distanceTraveled;
+        eta = RemainingDistance / speed;
 
+        var percentage = Instance.GoalTimePercentage / 100;
+        //goalTime = eta * percentage;
         goalTime -= Time.deltaTime;
 
         etaSeconds = (int)((eta * 60) * 60);
-        goalTimeSeconds = (int)((goalTime * 60) * 60);
-        var progress = distance / distanceTraveled;
-        uiController.UpdateUI(speed, etaSeconds, goalTimeSeconds, progress);
+        goalTimeSeconds = (int)(((goalTime * (Instance.GoalTimePercentage / 100)) * 60) * 60);
 
-        if (etaSeconds <= 0)
-        {
-            Debug.Log("Times Up");
-        }
+        var progress = distance / distanceTraveled;
+
+        UIController.onUIChange.Invoke(speed, etaSeconds, goalTimeSeconds, progress);
+
+        //Debug.Log("Eta: " + etaSeconds + " " + "GoalTime: " + " " + goalTimeSeconds + " " + Instance.GoalTimePercentage + "%");
+        //if (goalTime <= 0)
+        //{
+        //    Debug.Log("Times Up");
+        //}
     }
 }

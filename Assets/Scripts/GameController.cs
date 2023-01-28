@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class GameController : MonoBehaviour
 {
@@ -40,9 +39,6 @@ public class GameController : MonoBehaviour
 
     public TelemetryCalculatorBehaviour TelemetryTracker { get; set; } 
 
-    //delete?
-    //private UIController uiController;
-
     private void OnEnable()
     {
         onSpeedChange += SpeedUpdateEvent;
@@ -72,11 +68,10 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void SpeedUpdateEvent(float newSpeed)
+    private void SpeedUpdateEvent(float newSpeed)
     {
         StartCoroutine(SpeedUpdate(newSpeed));
     }
-
     private IEnumerator SpeedUpdate(float newSpeed)
     {
         var _t = 0f;
