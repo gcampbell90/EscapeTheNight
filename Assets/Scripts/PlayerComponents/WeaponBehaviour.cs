@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WeaponBehaviour : MonoBehaviour
@@ -44,7 +45,8 @@ public class WeaponBehaviour : MonoBehaviour
 
     void Awake()
     {
-        mainCamera = Camera.main;
+        mainCamera = GameObject.FindGameObjectWithTag("PlayerCamera").GetComponent<Camera>();
+        //mainCamera = FindObjectOfType<Camera>().tag == "PlayerCamera";
     }
     void Start()
     {
@@ -96,6 +98,7 @@ public class WeaponBehaviour : MonoBehaviour
             StopAllCoroutines();
         }
     }
+
     private void FollowMouse()
     {
         Vector2 targetVelocity = GetInput() * sensitivity;
@@ -176,7 +179,6 @@ public class WeaponBehaviour : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
     }
-
     private void SpawnEffect(RaycastHit hit, Vector3 dir)
     {
         GameObject impactGO = Instantiate(ImpactEffect, hit.point, Quaternion.Euler(dir), hit.transform);
@@ -195,7 +197,6 @@ public class WeaponBehaviour : MonoBehaviour
     {
         Time.timeScale = 0.25f;
     }
-
     Vector2 GetInput()
     {
         Vector2 input = new Vector2(

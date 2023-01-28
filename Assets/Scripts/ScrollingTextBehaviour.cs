@@ -7,17 +7,22 @@ public class ScrollingTextBehaviour : MonoBehaviour
 {
     [SerializeField] private TMP_Text scrollingText;
     [SerializeField] private float scrollSpeed = 0.1f;
-    [TextArea(minLines:1,maxLines:50)][SerializeField] private string textToShow = "This is a sample text for scrolling text";
+    [TextArea(minLines: 1, maxLines: 50)][SerializeField] private string textToShow = "This is a sample text for scrolling text";
     [SerializeField] private float fadeDuration = 2f;
-    
+
     private int currentIndex = 0;
     private float delay = 0.5f;
     private CanvasGroup canvasGroup;
 
-    private void Start()
+    //private void Start()
+    //{
+    //    canvasGroup = GetComponent<CanvasGroup>();
+    //    StartScrolling(textToShow);
+    //}
+
+    public void Outro()
     {
-        canvasGroup = GetComponent<CanvasGroup>();
-        StartScrolling(textToShow);
+        Debug.Log("Outro Shitttt");
     }
 
     public void StartScrolling(string text)
@@ -37,9 +42,6 @@ public class ScrollingTextBehaviour : MonoBehaviour
         {
             CancelInvoke();
             StartCoroutine(FadeText());
-
-            //TODO move this from this method to gamecontroller? Invoke via event from here
-            await SceneLoadManager.Instance.LoadMainSceneAsync();
             return;
         }
         if (textToShow[currentIndex] == ',' || textToShow[currentIndex] == '.')
@@ -76,4 +78,5 @@ public class ScrollingTextBehaviour : MonoBehaviour
         textCol.a = 0;
         StartCoroutine(FadeCanvas());
     }
+
 }

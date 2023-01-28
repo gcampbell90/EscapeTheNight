@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GateBehaviour : MonoBehaviour
 {
-    private TelemetryCalculatorBehaviour telemetryCalculator;
+    private TelemetryCalculatorBehaviour telemetryTracker;
 
     private void Awake()
     {
-        telemetryCalculator = GameController.Instance.TelemetryTracker;
+        telemetryTracker = GameController.Instance.TelemetryTracker;
     }
 
     private void Start()
@@ -22,7 +22,7 @@ public class GateBehaviour : MonoBehaviour
 
         while (true)
         {
-            gatePos.z = telemetryCalculator.RemainingDistance * 1609.34f;
+            gatePos.z = telemetryTracker.RemainingDistance * 1609.34f;
             transform.position = gatePos;
             //Debug.Log($"gatepos: {gatePos} remainingDist:{telemetryCalculator.RemainingDistance}");
             yield return null;
@@ -32,5 +32,6 @@ public class GateBehaviour : MonoBehaviour
     private void OnTriggerEnter(Collider collision)
     {
         Debug.Log($"Gate Enter " + collision.name);
+        GameController.onGameOver();
     }
 }

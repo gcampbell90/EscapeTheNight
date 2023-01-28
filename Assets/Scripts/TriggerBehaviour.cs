@@ -22,7 +22,7 @@ internal class TriggerBehaviour : MonoBehaviour, ITriggerBehaviour
         //
         if (triggerCollider.gameObject.name == "Player")
         {
-            Debug.Log("COLLISION");
+            Debug.Log("Car Collision with "+ triggerCollider.name);
             CarCollision.OnCollision?.Invoke();
             //StartCoroutine(CarCollisionEffect());
         }

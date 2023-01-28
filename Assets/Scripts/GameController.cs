@@ -7,6 +7,10 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    //Singleton
+    private static GameController _instance;
+    public static GameController Instance { get { return _instance; } }
+
     [Range(70, 100)]
     [SerializeField] private float goalTimePercentage;
     public float GoalTimePercentage { get => goalTimePercentage; private set => goalTimePercentage = value; }
@@ -35,32 +39,47 @@ public class GameController : MonoBehaviour
     public delegate void OnSpeedChange(float newSpeed);
     public static OnSpeedChange onSpeedChange;
 
-    public static GameController Instance { get; private set; }
+    //Event for when the player boosts - speeds up scene and appropriate other objects
+    public delegate void OnGameOver();
+    public static OnGameOver onGameOver;
 
-    public TelemetryCalculatorBehaviour TelemetryTracker { get; set; } 
+    public TelemetryCalculatorBehaviour TelemetryTracker { get; set; }
 
     private void OnEnable()
     {
         onSpeedChange += SpeedUpdateEvent;
+        onGameOver += GameOverEvent;
     }
+
     private void OnDisable()
     {
         onSpeedChange -= SpeedUpdateEvent;
+        onGameOver -= GameOverEvent;
     }
 
     private void Awake()
     {
-        TelemetryTracker = GetComponent<TelemetryCalculatorBehaviour>();
-        //uiController = GetComponent<UIController>();
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
 
-        Instance = this;
+        TelemetryTracker = GetComponent<TelemetryCalculatorBehaviour>();
         //Debug.Log($"StartMPH:{standardSpeed_MPH},BoostSpeed: {boostSpeed_MPH}, Length of road: {levelLength_Miles}");
     }
-    private void Start()
+    private async void Start()
     {
         var gateSpawnPos = new Vector3(0, 0, LevelLength_Miles * 1609.34f);
 
-        Instantiate(endWallPrefab, gateSpawnPos, Quaternion.identity);
+        var endWall = Instantiate(endWallPrefab, gateSpawnPos, Quaternion.identity);
+        
+        //When loading main scene and unloading intro scene we have to move the wall GO.
+        //When just playing the main scene this will throw and error
+        SceneController.Instance.MoveGameObject(endWall);
 
         foreach (var chunk in chunkSpawners)
         {
@@ -88,6 +107,11 @@ public class GameController : MonoBehaviour
             yield return null;
         }
     }
-
+    private async void GameOverEvent()
+    {
+        Debug.Log("GameOver event");
+        await SceneController.Instance.LoadSceneAsync("OutroScene");
+        await SceneController.Instance.UnloadSceneAsync("MainScene");
+    }
 }
 

@@ -18,7 +18,7 @@ public class PlayerCollisionBehaviour : MonoBehaviour
     }
     private void OnTriggerEnter(Collider collision)
     {
-        //Debug.Log($"Player Hit something");
+        Debug.Log($"Player Collider " + collision.name);
 
         //GameController.onSpeedChange?.Invoke(penaltySpeed);
         movementBehaviour.ResetPos();
