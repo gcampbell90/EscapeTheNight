@@ -2,6 +2,7 @@ using AmazingAssets.CurvedWorld.Example;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 
@@ -45,6 +46,8 @@ public class GameController : MonoBehaviour
 
     public TelemetryCalculatorBehaviour TelemetryTracker { get; set; }
 
+    public bool isWinner { get; set; }
+
     private void OnEnable()
     {
         onSpeedChange += SpeedUpdateEvent;
@@ -59,9 +62,10 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
+
         if (_instance != null && _instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
         else
         {
@@ -69,22 +73,22 @@ public class GameController : MonoBehaviour
         }
 
         TelemetryTracker = GetComponent<TelemetryCalculatorBehaviour>();
+        DontDestroyOnLoad(gameObject);
         //Debug.Log($"StartMPH:{standardSpeed_MPH},BoostSpeed: {boostSpeed_MPH}, Length of road: {levelLength_Miles}");
     }
-    private async void Start()
+    private void Start()
     {
         var gateSpawnPos = new Vector3(0, 0, LevelLength_Miles * 1609.34f);
 
         var endWall = Instantiate(endWallPrefab, gateSpawnPos, Quaternion.identity);
-        
-        //When loading main scene and unloading intro scene we have to move the wall GO.
-        //When just playing the main scene this will throw and error
-        SceneController.Instance.MoveGameObject(endWall);
 
         foreach (var chunk in chunkSpawners)
         {
             chunk.movingSpeed = StandardSpeed_MPH * 0.44704f;
         }
+
+        if (SceneController.Instance == null) return;
+        SceneController.Instance.MoveGameObject(endWall);
     }
 
     private void SpeedUpdateEvent(float newSpeed)
@@ -97,7 +101,7 @@ public class GameController : MonoBehaviour
         var _dur = 1f;
         while (_t < 1f)
         {
-            TelemetryTracker.speed = newSpeed;
+            TelemetryTracker.Speed = newSpeed;
 
             foreach (var chunk in chunkSpawners)
             {
@@ -110,6 +114,20 @@ public class GameController : MonoBehaviour
     private async void GameOverEvent()
     {
         Debug.Log("GameOver event");
+        if (TelemetryTracker.etaSeconds > TelemetryTracker.goalTimeSeconds)
+        {
+            isWinner = false;
+            Debug.Log("Lose");
+        }
+        else
+        {
+            isWinner = true;
+            Debug.Log("Win");
+        }
+
+        Destroy(gameObject);
+
+        if (SceneController.Instance == null) return;
         await SceneController.Instance.LoadSceneAsync("OutroScene");
         await SceneController.Instance.UnloadSceneAsync("MainScene");
     }

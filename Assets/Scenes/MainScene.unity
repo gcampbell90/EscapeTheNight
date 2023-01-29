@@ -1725,7 +1725,7 @@ MonoBehaviour:
   standardSpeed_MPH: 100
   boostSpeed_MPH: 200
   penaltySpeed: 60
-  levelLength_Miles: 0.5
+  levelLength_Miles: 0.1
   chunkSpawners:
   - {fileID: 1223694722}
   - {fileID: 2046538060}
@@ -1760,6 +1760,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a181d670bf6938447ae5f3133f98750e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  etaSeconds: 0
+  goalTimeSeconds: 0
 --- !u!114 &312378236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17192,7 +17194,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2053692215
 RectTransform:
   m_ObjectHideFlags: 0

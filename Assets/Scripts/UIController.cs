@@ -39,11 +39,9 @@ public class UIController : MonoBehaviour
 
         _etaInfoText.text = $"{time}";
         _goalTimeText.text = $"{goalTime}";
-
         _speedDialText.text = $"{speed}";
         _progressSlider.value = progress;
     }
-
     private void UpdateBoostBar(float fuel)
     {
         fuel /= 100;

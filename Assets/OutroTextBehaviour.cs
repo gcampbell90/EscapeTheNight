@@ -8,6 +8,14 @@ public class OutroTextBehaviour : ScrollingTextBehaviour
     private void Start()
     {
         Outro();
+        if (GameController.Instance.isWinner)
+        {
+            WinText();
+        }
+        else
+        {
+            LoseText();
+        }
     }
 
     public async void Restart()

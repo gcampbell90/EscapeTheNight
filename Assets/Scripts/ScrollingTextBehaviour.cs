@@ -79,4 +79,14 @@ public class ScrollingTextBehaviour : MonoBehaviour
         StartCoroutine(FadeCanvas());
     }
 
+    public void WinText()
+    {
+        scrollingText.text = "You have escaped the city";
+    }
+
+    public void LoseText()
+    {
+        scrollingText.text = "You have been captured";
+    }
+
 }
