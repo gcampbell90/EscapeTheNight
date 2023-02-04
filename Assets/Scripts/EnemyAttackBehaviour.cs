@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyAttackBehaviour : MonoBehaviour
 {
-    public float fireRate;
+    private float fireRate;
     public float fireRange = 10f;
 
     private float fireTimer = 0f;
@@ -24,7 +24,6 @@ public class EnemyAttackBehaviour : MonoBehaviour
         if (Vector3.Distance(transform.position, playerTransform.position) <= fireRange && fireTimer >= fireRate)
         {
             FireProjectile();
-            fireTimer = 0f;
         }
     }
 
@@ -40,6 +39,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
         // Activate the projectile
         projectile.SetActive(true);
         projectile.GetComponent<ProjectileBehaviour>().ProjectileShoot();
-
+        
+        fireTimer = 0f;
     }
 }

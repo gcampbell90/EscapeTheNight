@@ -14,16 +14,19 @@ public class ProjectileBehaviour : MonoBehaviour
     private IEnumerator ProjectileFire()
     {
         float t = 0f;
-        var pos = target.position;
-        while (t <= 5f)
+        var start = transform.position;
+        var targetPos = target.position;
+        while (t <=1f)
         {
-            transform.position = Vector3.Lerp(transform.position, pos, t * 0.5f);
+            Debug.Log("Moving Projectile");
+            transform.position = Vector3.Lerp(start, targetPos, t);
+            transform.LookAt(targetPos);
             t += Time.deltaTime;
             yield return null;
         }
 
         // Return the object to the pool when it's no longer needed
-        ObjectPool.instance.ReturnToPool(gameObject);
+        gameObject.SetActive(false);
     }
 }
 

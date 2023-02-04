@@ -44,11 +44,5 @@ public class ObjectPool : MonoBehaviour
         pooledObjects.Add(obj);
         return obj;
     }
-
-    // Method to return an object to the pool
-    public void ReturnToPool(GameObject obj)
-    {
-        obj.SetActive(false);
-    }
 }
 

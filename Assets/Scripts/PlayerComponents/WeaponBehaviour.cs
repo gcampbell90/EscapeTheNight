@@ -99,6 +99,24 @@ public class WeaponBehaviour : MonoBehaviour
         }
     }
 
+    Vector2 GetInput()
+    {
+        Vector2 input = new Vector2(
+            Input.GetAxis("Mouse X"),
+            Input.GetAxis("Mouse Y")
+            );
+
+        return input;
+    }
+    float ClampVerticalAngle(float angle)
+    {
+        return Mathf.Clamp(angle, 1.5f, maxVerticalAngleHorizon);
+    }
+    float ClampHorizontalAngle(float angle)
+    {
+        return Mathf.Clamp(angle, -maxHorizontalAngleHorizon, maxHorizontalAngleHorizon);
+    }
+
     private void FollowMouse()
     {
         Vector2 targetVelocity = GetInput() * sensitivity;
@@ -119,9 +137,6 @@ public class WeaponBehaviour : MonoBehaviour
 
         gun2_Pivot.transform.rotation = Quaternion.Euler(-rotation.y, rotation.x, 0);
         gun2_Pivot1.transform.rotation = Quaternion.Euler(-rotation.y, rotation.x, 0);
-
-        //pivot.transform.eulerAngles = new Vector3(-rotation.y, rotation.x, 0);
-        //pivot1.transform.eulerAngles = new Vector3(-rotation.y, rotation.x, 0);
 
         timer += Time.unscaledDeltaTime;
     }
@@ -174,7 +189,6 @@ public class WeaponBehaviour : MonoBehaviour
                 //Debug.Log("R Did not Hit");
             }
 
-            yield return new WaitForEndOfFrame();
 
             yield return new WaitForSeconds(0.05f);
         }
@@ -189,6 +203,7 @@ public class WeaponBehaviour : MonoBehaviour
         main_UI.SetActive(!isOn);
         gun_UI.SetActive(isOn);
     }
+
     private void NormalTime()
     {
         Time.timeScale = 1;
@@ -197,22 +212,6 @@ public class WeaponBehaviour : MonoBehaviour
     {
         Time.timeScale = 0.25f;
     }
-    Vector2 GetInput()
-    {
-        Vector2 input = new Vector2(
-            Input.GetAxis("Mouse X"),
-            Input.GetAxis("Mouse Y")
-            );
 
-        return input;
-    }
-    float ClampVerticalAngle(float angle)
-    {
-        return Mathf.Clamp(angle, 1.5f, maxVerticalAngleHorizon);
-    }
-    float ClampHorizontalAngle(float angle)
-    {
-        return Mathf.Clamp(angle, -maxHorizontalAngleHorizon, maxHorizontalAngleHorizon);
-    }
 
 }

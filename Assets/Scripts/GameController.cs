@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    
     //Singleton
     private static GameController _instance;
     public static GameController Instance { get { return _instance; } }
@@ -53,7 +54,6 @@ public class GameController : MonoBehaviour
         onSpeedChange += SpeedUpdateEvent;
         onGameOver += GameOverEvent;
     }
-
     private void OnDisable()
     {
         onSpeedChange -= SpeedUpdateEvent;

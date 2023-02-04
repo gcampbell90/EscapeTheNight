@@ -12,7 +12,7 @@ internal class TriggerBehaviour : MonoBehaviour, ITriggerBehaviour
     {
         //Cameron Edit
         //--
-        //Added Rigibodies and colliders to the cars, with is trigger checked. Mesh Collider also applied to Batmobile.
+        //Added Rigibodies and colliders to the cars, with is trigger checked. Mesh Collider also applied to player.
         //Check below stops false positives (collisions) with the curved world floor/road.
         //
         //Gary Edit
@@ -22,9 +22,9 @@ internal class TriggerBehaviour : MonoBehaviour, ITriggerBehaviour
         //
         if (triggerCollider.gameObject.name == "Player")
         {
-            Debug.Log("Car Collision with "+ triggerCollider.name);
+            //Debug.Log("Car Collision with "+ triggerCollider.name);
             CarCollision.OnCollision?.Invoke();
-            //StartCoroutine(CarCollisionEffect());
+            EnemySpawnManager.onDroneCall.Invoke();
         }
         else
         {

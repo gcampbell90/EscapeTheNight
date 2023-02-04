@@ -50,7 +50,6 @@ public class EnemyBehaviour : MonoBehaviour
         }
         if (!isAnimated) yield break;
     }
-
     private IEnumerator FloatAround()
     {
         float _t = 0f;
@@ -85,11 +84,6 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("Enemy Hit OnCollision");
-    }
-
     private void TakeDamage()
     {
         health -= 1;
@@ -98,7 +92,6 @@ public class EnemyBehaviour : MonoBehaviour
             StartCoroutine(DroneDeath());
         }
     }
-
     IEnumerator DroneDeath()
     {
         explosionSound.Play();
@@ -108,9 +101,14 @@ public class EnemyBehaviour : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("Enemy Hit OnCollision");
+    }
     private void OnDestroy()
     {
         StopAllCoroutines();
+        EnemySpawnManager.onDroneDestroyed?.Invoke();
         Debug.Log("Enemy Destroyed");
     }
 }

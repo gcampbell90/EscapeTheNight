@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - PlayerCamera
   - AimCamera
+  - PlayerCamera
   layers:
   - Default
   - TransparentFX
@@ -13,13 +13,13 @@ TagManager:
   - 
   - Water
   - UI
-  - Batmobile
+  - Player
   - Lamposts
   - Road
   - WeaponUI
-  - Skybox
-  - LightMapBaking
-  - EndGate
+  - Weapons
+  - 
+  - 
   - 
   - 
   - 
