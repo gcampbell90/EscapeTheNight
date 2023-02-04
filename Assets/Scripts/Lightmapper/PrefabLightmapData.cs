@@ -106,7 +106,7 @@ public class PrefabLightmapData : MonoBehaviour
     void OnEnable()
     {
 
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
 
     }
 
@@ -119,7 +119,7 @@ public class PrefabLightmapData : MonoBehaviour
     // called when the game is terminated
     void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
 

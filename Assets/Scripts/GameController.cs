@@ -2,13 +2,20 @@ using AmazingAssets.CurvedWorld.Example;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    [Range(0, 100)]
+    //Singleton
+    private static GameController _instance;
+    public static GameController Instance { get { return _instance; } }
+
+    [Range(70, 100)]
     [SerializeField] private float goalTimePercentage;
+    public float GoalTimePercentage { get => goalTimePercentage; private set => goalTimePercentage = value; }
+
     [Header("Player Setup")]
     [SerializeField] private float standardSpeed_MPH;
     public float StandardSpeed_MPH { get => standardSpeed_MPH; private set => standardSpeed_MPH = value; }
@@ -27,60 +34,64 @@ public class GameController : MonoBehaviour
 
     public float LevelLength_Miles { get => levelLength_Miles; private set => levelLength_Miles = value; }
 
-    [SerializeField]private GameObject endWallPrefab;
+    [SerializeField] private GameObject endWallPrefab;
 
     //Event for when the player boosts - speeds up scene and appropriate other objects
     public delegate void OnSpeedChange(float newSpeed);
     public static OnSpeedChange onSpeedChange;
 
-    public static GameController Instance { get; private set; }
+    //Event for when the player boosts - speeds up scene and appropriate other objects
+    public delegate void OnGameOver();
+    public static OnGameOver onGameOver;
 
-    private TelemetryCalculatorBehaviour etaTracker;
+    public TelemetryCalculatorBehaviour TelemetryTracker { get; set; }
 
-    //implement
-    private UIController uiController;
+    public bool isWinner { get; set; }
 
     private void OnEnable()
     {
         onSpeedChange += SpeedUpdateEvent;
+        onGameOver += GameOverEvent;
     }
+
     private void OnDisable()
     {
         onSpeedChange -= SpeedUpdateEvent;
+        onGameOver -= GameOverEvent;
     }
+
     private void Awake()
     {
-        etaTracker = GetComponent<TelemetryCalculatorBehaviour>();
-        uiController = GetComponent<UIController>();
 
-        Instance = this;
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+
+        TelemetryTracker = GetComponent<TelemetryCalculatorBehaviour>();
+        DontDestroyOnLoad(gameObject);
         //Debug.Log($"StartMPH:{standardSpeed_MPH},BoostSpeed: {boostSpeed_MPH}, Length of road: {levelLength_Miles}");
     }
     private void Start()
     {
-        var wallObj = Instantiate(endWallPrefab);
-        //endWallPrefab.transform.localScale = new Vector3(20, 20, 1);
-        endWallPrefab.transform.position = new Vector3(0, 0, levelLength_Miles * 1609.34f);
+        var gateSpawnPos = new Vector3(0, 0, LevelLength_Miles * 1609.34f);
 
-        StartCoroutine(MoveWall(wallObj));
+        var endWall = Instantiate(endWallPrefab, gateSpawnPos, Quaternion.identity);
+
         foreach (var chunk in chunkSpawners)
         {
             chunk.movingSpeed = StandardSpeed_MPH * 0.44704f;
         }
-        etaTracker.distance = levelLength_Miles;
-        etaTracker.speed = standardSpeed_MPH;
+
+        if (SceneController.Instance == null) return;
+        SceneController.Instance.MoveGameObject(endWall);
     }
 
-    private IEnumerator MoveWall(GameObject wallObj)
-    {
-        while (true)
-        {
-            wallObj.transform.position = transform.position + new Vector3(0, 0, etaTracker.RemainingDistance * 1609.34f);
-            //Debug.Log("Moving wall" + (etaTracker.RemainingDistance * 1609.34f));
-            yield return null;
-        }
-    }
-    public void SpeedUpdateEvent(float newSpeed)
+    private void SpeedUpdateEvent(float newSpeed)
     {
         StartCoroutine(SpeedUpdate(newSpeed));
     }
@@ -90,7 +101,7 @@ public class GameController : MonoBehaviour
         var _dur = 1f;
         while (_t < 1f)
         {
-            etaTracker.speed = newSpeed;
+            TelemetryTracker.Speed = newSpeed;
 
             foreach (var chunk in chunkSpawners)
             {
@@ -100,6 +111,25 @@ public class GameController : MonoBehaviour
             yield return null;
         }
     }
+    private async void GameOverEvent()
+    {
+        Debug.Log("GameOver event");
+        if (TelemetryTracker.etaSeconds > TelemetryTracker.goalTimeSeconds)
+        {
+            isWinner = false;
+            Debug.Log("Lose");
+        }
+        else
+        {
+            isWinner = true;
+            Debug.Log("Win");
+        }
 
+        Destroy(gameObject);
+
+        if (SceneController.Instance == null) return;
+        await SceneController.Instance.LoadSceneAsync("OutroScene");
+        await SceneController.Instance.UnloadSceneAsync("MainScene");
+    }
 }
 

@@ -1,22 +1,28 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Threading.Tasks;
 
 public class ScrollingTextBehaviour : MonoBehaviour
 {
     [SerializeField] private TMP_Text scrollingText;
     [SerializeField] private float scrollSpeed = 0.1f;
-    [TextArea(minLines:1,maxLines:50)][SerializeField] private string textToShow = "This is a sample text for scrolling text";
+    [TextArea(minLines: 1, maxLines: 50)][SerializeField] private string textToShow = "This is a sample text for scrolling text";
     [SerializeField] private float fadeDuration = 2f;
-    
+
     private int currentIndex = 0;
     private float delay = 0.5f;
     private CanvasGroup canvasGroup;
 
-    private void Start()
+    //private void Start()
+    //{
+    //    canvasGroup = GetComponent<CanvasGroup>();
+    //    StartScrolling(textToShow);
+    //}
+
+    public void Outro()
     {
-        canvasGroup = GetComponent<CanvasGroup>();
-        StartScrolling(textToShow);
+        Debug.Log("Outro Shitttt");
     }
 
     public void StartScrolling(string text)
@@ -24,10 +30,10 @@ public class ScrollingTextBehaviour : MonoBehaviour
         textToShow = text;
         scrollingText.text = "";
         currentIndex = 0;
-        InvokeRepeating("UpdateText", 0f, scrollSpeed);
+        InvokeRepeating("UpdateTextAsync", 0f, scrollSpeed);
     }
 
-    private void UpdateText()
+    private async Task UpdateTextAsync()
     {
         scrollingText.text += textToShow[currentIndex];
         currentIndex++;
@@ -41,13 +47,14 @@ public class ScrollingTextBehaviour : MonoBehaviour
         if (textToShow[currentIndex] == ',' || textToShow[currentIndex] == '.')
         {
             CancelInvoke();
-            InvokeRepeating("UpdateText", delay, scrollSpeed);
+            InvokeRepeating("UpdateTextAsync", delay, scrollSpeed);
         }
     }
 
     private IEnumerator FadeCanvas()
     {
         float elapsedTime = 0f;
+
         while (elapsedTime < fadeDuration)
         {
             canvasGroup.alpha = 1 - (elapsedTime / fadeDuration);
@@ -71,4 +78,15 @@ public class ScrollingTextBehaviour : MonoBehaviour
         textCol.a = 0;
         StartCoroutine(FadeCanvas());
     }
+
+    public void WinText()
+    {
+        scrollingText.text = "You have escaped the city";
+    }
+
+    public void LoseText()
+    {
+        scrollingText.text = "You have been captured";
+    }
+
 }
