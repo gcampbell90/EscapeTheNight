@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemyAttackBehaviour : MonoBehaviour
 {
-    private float fireRate;
-    public float fireRange = 10f;
+    public float fireRate;
+    public float fireRange;
 
     private float fireTimer = 0f;
     private Transform playerTransform;
@@ -16,7 +16,6 @@ public class EnemyAttackBehaviour : MonoBehaviour
         fireRate = Random.Range(1.0f, 2.0f);
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
-
     void Update()
     {
         fireTimer += Time.deltaTime;
@@ -26,7 +25,6 @@ public class EnemyAttackBehaviour : MonoBehaviour
             FireProjectile();
         }
     }
-
     void FireProjectile()
     {
         // Retrieve a projectile from the object pool
@@ -34,12 +32,12 @@ public class EnemyAttackBehaviour : MonoBehaviour
 
         // Set the projectile's target and position
         projectile.transform.position = transform.position;
-        projectile.GetComponent<ProjectileBehaviour>().target = playerTransform;
+        projectile.GetComponent<ProjectileBehaviour>().Target = playerTransform;
 
         // Activate the projectile
         projectile.SetActive(true);
         projectile.GetComponent<ProjectileBehaviour>().ProjectileShoot();
-        
+
         fireTimer = 0f;
     }
 }

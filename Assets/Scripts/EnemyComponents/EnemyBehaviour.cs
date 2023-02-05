@@ -58,10 +58,11 @@ public class EnemyBehaviour : MonoBehaviour
 
         while (true)
         {
-            _offset = new Vector3(Random.Range(-12f, 12f), Random.Range(5, 11f), Random.Range(10f, 20f));
+            _offset = new Vector3(Random.Range(-12f, 12f), Random.Range(5, 11f), Random.Range(20f, 40f));
+            var pos = transform.position;
             while (_t < dur)
             {
-                transform.position = Vector3.Lerp(transform.position, _offset, _t);
+                transform.position = Vector3.Lerp(pos, _offset, _t);
                 _t += Time.deltaTime / dur;
                 yield return null;
             }
@@ -105,6 +106,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         Debug.Log("Enemy Hit OnCollision");
     }
+
     private void OnDestroy()
     {
         StopAllCoroutines();

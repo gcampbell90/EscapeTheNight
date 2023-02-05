@@ -1513,7 +1513,7 @@ MonoBehaviour:
   standardSpeed_MPH: 60
   boostSpeed_MPH: 200
   penaltySpeed: 30
-  levelLength_Miles: 1
+  levelLength_Miles: 100
   chunkSpawners:
   - {fileID: 1223694722}
   - {fileID: 2046538060}
@@ -2429,7 +2429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d681181cb03a9c418545a3a44a2de1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnCount: 1
+  spawnCount: 5
   enemy: {fileID: 4322698676300097442, guid: b5c2e0d050b385e4b819a71bbe2ba884, type: 3}
   isMoving: 1
   _player: {fileID: 543450652197658636}
@@ -2576,7 +2576,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 651889431}
-  - component: {fileID: 651889432}
   - component: {fileID: 651889433}
   m_Layer: 0
   m_Name: Car Spawner
@@ -2601,26 +2600,6 @@ Transform:
   m_Father: {fileID: 919096832}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &651889432
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 651889430}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bd045411e8d4854b8ba73b6a7a19737, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cars:
-  - {fileID: 0}
-  spawnRate: 1
-  spawnRandomizer: 0.1
-  positionRandomizer: {x: 4, y: 0, z: -500}
-  rotation: {x: 0, y: 0, z: 0}
-  moveDirection: {x: 0, y: 0, z: -1}
-  movingSpeed: {x: 6, y: 12}
 --- !u!114 &651889433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10110,14 +10089,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591131207}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: -0, y: 0.96674675, z: -0.25573555, w: 0}
   m_LocalPosition: {x: -0.0025173617, y: 0.47666666, z: -1.367}
   m_LocalScale: {x: 0.62615126, y: 0.35441765, z: 0.9583491}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 543450652197658636}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 29.634, y: 180, z: 0}
 --- !u!114 &1591131209
 MonoBehaviour:
   m_ObjectHideFlags: 0

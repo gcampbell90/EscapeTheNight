@@ -60,7 +60,7 @@ public class EnemySpawnManager : MonoBehaviour
             _y = 7;
             _pos.x = (x - _offset) * _spacing;
             _pos.y = _y;
-            _pos.z = 20;
+            _pos.z = 40;
 
             var _enemy = Instantiate(enemy);
             _enemy.GetComponent<EnemyBehaviour>().TargetPos = _pos;

@@ -8,8 +8,6 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    
-    //Singleton
     private static GameController _instance;
     public static GameController Instance { get { return _instance; } }
 
@@ -62,7 +60,6 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-
         if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
@@ -78,19 +75,17 @@ public class GameController : MonoBehaviour
     }
     private void Start()
     {
+        SpawnEndWall();
+        SpeedUpdateEvent(StandardSpeed_MPH);
+    }
+
+    private void SpawnEndWall()
+    {
         var gateSpawnPos = new Vector3(0, 0, LevelLength_Miles * 1609.34f);
-
         var endWall = Instantiate(endWallPrefab, gateSpawnPos, Quaternion.identity);
-
-        foreach (var chunk in chunkSpawners)
-        {
-            chunk.movingSpeed = StandardSpeed_MPH * 0.44704f;
-        }
-
         if (SceneController.Instance == null) return;
         SceneController.Instance.MoveGameObject(endWall);
     }
-
     private void SpeedUpdateEvent(float newSpeed)
     {
         StartCoroutine(SpeedUpdate(newSpeed));
@@ -105,7 +100,7 @@ public class GameController : MonoBehaviour
 
             foreach (var chunk in chunkSpawners)
             {
-                chunk.movingSpeed = newSpeed * 0.44704f;
+                chunk.movingSpeed = (newSpeed * 0.44704f) * 2;
                 _t += Time.deltaTime / _dur;
             }
             yield return null;
