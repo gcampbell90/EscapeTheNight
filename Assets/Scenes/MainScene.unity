@@ -2431,8 +2431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnCount: 5
   enemy: {fileID: 4322698676300097442, guid: b5c2e0d050b385e4b819a71bbe2ba884, type: 3}
-  isMoving: 1
-  _player: {fileID: 543450652197658636}
+  isMoving: 0
 --- !u!4 &637379891
 Transform:
   m_ObjectHideFlags: 0

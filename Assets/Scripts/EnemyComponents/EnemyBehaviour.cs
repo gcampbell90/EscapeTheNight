@@ -28,7 +28,6 @@ public class EnemyBehaviour : MonoBehaviour
         isAnimated = true;
         StartCoroutine(FloatAround());
     }
-
     private IEnumerator LookAtTarget()
     {
         while (true)
@@ -41,33 +40,32 @@ public class EnemyBehaviour : MonoBehaviour
     {
         float timer = 0;
         float duration = 2f;
-        Vector3 SpawnPos = new Vector3(0, 70, 50);
+        Vector3 SpawnPos = new Vector3(0, Random.Range(20f, 30f), Random.Range(30f, 50f));
         while (timer < 1)
         {
             transform.position = Vector3.Slerp(SpawnPos, TargetPos, timer);
             timer += Time.deltaTime / duration;
             yield return null;
         }
-        if (!isAnimated) yield break;
+        Animate();
     }
     private IEnumerator FloatAround()
     {
-        float _t = 0f;
-        float dur = 1f;
-        Vector3 _offset;
+        float m_timer = 0f;
+        float m_duration = 1f;
+        Vector3 m_offset;
 
         while (true)
         {
-            _offset = new Vector3(Random.Range(-12f, 12f), Random.Range(5, 11f), Random.Range(20f, 40f));
-            var pos = transform.position;
-            while (_t < dur)
+            m_offset = new Vector3(Random.Range(-12f, 12f), Random.Range(5, 11f), Random.Range(20f, 40f));
+            var m_pos = transform.position;
+            while (m_timer < m_duration)
             {
-                transform.position = Vector3.Lerp(pos, _offset, _t);
-                _t += Time.deltaTime / dur;
+                transform.position = Vector3.Lerp(m_pos, m_offset, m_timer);
+                m_timer += Time.deltaTime / m_duration;
                 yield return null;
             }
-            _t = 0f;
-
+            m_timer = 0f;
             yield return null;
         }
     }

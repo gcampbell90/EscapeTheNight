@@ -8,7 +8,7 @@ public class EnemySpawnManager : MonoBehaviour
     [SerializeField] private int spawnCount;
     [SerializeField] GameObject enemy;
     [SerializeField] bool isMoving;
-    [SerializeField] private Transform _player;
+    private Transform playerTransform;
 
     private int spawnedEnemyCount = 0;
 
@@ -28,10 +28,16 @@ public class EnemySpawnManager : MonoBehaviour
         onDroneCall -= ConfirmDronesPresent;
         onDroneDestroyed -= UpdateDroneCount;
     }
+    private void Start()
+    {
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+
+
+    }
 
     private void ConfirmDronesPresent()
     {
-        if(spawnedEnemyCount == 0)
+        if (spawnedEnemyCount == 0)
         {
             SpawnEnemies();
         }
@@ -49,23 +55,23 @@ public class EnemySpawnManager : MonoBehaviour
     void SpawnEnemies()
     {
         spawnedEnemyCount = spawnCount;
-        int _y;
-        Vector3 _pos = new Vector3();
+        int m_yPos;
+        Vector3 m_position = new Vector3();
 
-        float _offset = spawnCount / 2;
-        float _spacing = 5;
+        float m_offset = spawnCount / 2;
+        float m_spacing = 5;
 
         for (int x = 0; x < spawnCount; x++)
         {
-            _y = 7;
-            _pos.x = (x - _offset) * _spacing;
-            _pos.y = _y;
-            _pos.z = 40;
+            m_yPos = 7;
+            m_position.x = (x - m_offset) * m_spacing;
+            m_position.y = m_yPos;
+            m_position.z = 40;
 
-            var _enemy = Instantiate(enemy);
-            _enemy.GetComponent<EnemyBehaviour>().TargetPos = _pos;
-            _enemy.GetComponent<EnemyBehaviour>().PlayerTransform = _player;
-            if (isMoving) _enemy.GetComponent<EnemyBehaviour>().Animate(); continue;
+            var m_enemy = Instantiate(enemy);
+            m_enemy.GetComponent<EnemyBehaviour>().TargetPos = m_position;
+            m_enemy.GetComponent<EnemyBehaviour>().PlayerTransform = playerTransform;
+            m_enemy.GetComponent<EnemyAttackBehaviour>().PlayerTransform = playerTransform;
         }
     }
 }

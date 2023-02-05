@@ -21,6 +21,20 @@ public class PlayerMovementBehaviour : MonoBehaviour
 
     [SerializeField] private float laneChangeSpeed;
 
+    public delegate void OnPlayerHit();
+    public static OnPlayerHit onPlayerHit;
+
+
+    private void OnEnable()
+    {
+        onPlayerHit += ResetPos;
+    }
+
+    private void OnDisable()
+    {
+        onPlayerHit -= ResetPos;    
+    }
+
     private void Start()
     {
         currLanePosition = CurrentPos.middle;

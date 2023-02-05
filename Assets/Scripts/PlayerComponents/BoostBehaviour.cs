@@ -10,7 +10,6 @@ public class BoostBehaviour : MonoBehaviour
     float fuel = 100f;
     private bool IsBoosting = false;
 
-
     private void OnEnable()
     {
         boostEvent += ActivateBooster;
@@ -91,31 +90,24 @@ public class BoostBehaviour : MonoBehaviour
 
         jetMat.SetFloat("_BoostPower", 0);
     }
-    private void PlayBoostSFX()
-    {
-        var audioController = GetComponent<PlayerAudioBehaviour>();
-        audioController.ToggleJetSFX();
-    }
     private IEnumerator AnimateLights()
     {
         float minIntensity = Random.Range(10f, 30f);
         float maxIntensity = Random.Range(50f, 100f);
 
-        float duration = 0.1f;
-        //float progress = 0f;
-
         while (IsBoosting)
         {
             float randomValue = Random.Range(minIntensity, maxIntensity);
-
-            //jetLights[0].intensity = Mathf.Lerp(jetLights[0].intensity, targetValue, Time.deltaTime);
             jetLights[0].intensity = randomValue;
-            //progress += Time.deltaTime / duration;
 
-            yield return new WaitForSeconds(duration);
+            yield return new WaitForSeconds(0.1f);
         }
-
         jetLights[0].intensity = 0f;
+    }
+    private void PlayBoostSFX()
+    {
+        var audioController = GetComponent<PlayerAudioBehaviour>();
+        audioController.ToggleJetSFX();
     }
 
     //Deplete and Recharge boost bar

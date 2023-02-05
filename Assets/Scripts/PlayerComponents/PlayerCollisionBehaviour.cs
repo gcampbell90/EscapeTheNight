@@ -16,11 +16,10 @@ public class PlayerCollisionBehaviour : MonoBehaviour
     {
         //penaltySpeed = GameController.Instance.PenaltySpeed;
     }
+
     private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log($"Player Collider " + collision.name);
-
-        //GameController.onSpeedChange?.Invoke(penaltySpeed);
+        //Debug.Log($"Player Collider " + collision.name);
         movementBehaviour.ResetPos();
     }
 }
