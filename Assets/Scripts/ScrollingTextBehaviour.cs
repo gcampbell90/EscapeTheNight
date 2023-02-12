@@ -14,11 +14,11 @@ public class ScrollingTextBehaviour : MonoBehaviour
     private float delay = 0.5f;
     private CanvasGroup canvasGroup;
 
-    //private void Start()
-    //{
-    //    canvasGroup = GetComponent<CanvasGroup>();
-    //    StartScrolling(textToShow);
-    //}
+    private void Start()
+    {
+        canvasGroup = GetComponent<CanvasGroup>();
+        StartScrolling(textToShow);
+    }
 
     public void Outro()
     {
@@ -76,7 +76,7 @@ public class ScrollingTextBehaviour : MonoBehaviour
             yield return null;
         }
         textCol.a = 0;
-        StartCoroutine(FadeCanvas());
+        //StartCoroutine(FadeCanvas());
     }
 
     public void WinText()

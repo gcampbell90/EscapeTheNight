@@ -20,7 +20,6 @@ public class EnemyAttackBehaviour : MonoBehaviour
     void Update()
     {
         fireTimer += Time.deltaTime;
-
         if (Vector3.Distance(transform.position, PlayerTransform.position) <= fireRange && fireTimer >= fireRate)
         {
             FireProjectile();

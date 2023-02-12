@@ -10,15 +10,15 @@ public class CarCollisionBehaviour : MonoBehaviour
     MeshCollider _collider;
 
     public delegate void CollisionDelegate();
-    public CollisionDelegate OnCollision;
+    public CollisionDelegate onCollision;
 
     private void OnEnable()
     {
-        OnCollision += delegate { StartCoroutine(CarCollisionEffect()); };
+        onCollision += delegate { StartCoroutine(CarCollisionEffect()); };
     }
     private void OnDisable()
     {
-        OnCollision -= delegate { StartCoroutine(CarCollisionEffect()); };
+        onCollision -= delegate { StartCoroutine(CarCollisionEffect()); };
     }
     private void Awake()
     {
@@ -28,8 +28,8 @@ public class CarCollisionBehaviour : MonoBehaviour
 
     private void AddTriggerFunctionToMesh()
     {
-        var triggerBehaviour = _collider.transform.AddComponent<TriggerBehaviour>();
-        triggerBehaviour.SetEvent(this);
+        var triggerComponent = _collider.transform.AddComponent<TriggerBehaviour>();
+        triggerComponent.SetEvent(this);
     }
 
     private IEnumerator CarCollisionEffect()
@@ -42,7 +42,7 @@ public class CarCollisionBehaviour : MonoBehaviour
         var _originPos = transform.localPosition;
         var _originRot = transform.localRotation;
 
-        var _targetPos = _originPos + new Vector3(Random.Range(5, 20), Random.Range(5, 20), Random.Range(1,5));
+        var _targetPos = _originPos + new Vector3(Random.Range(5, 20), Random.Range(5, 20), Random.Range(1, 5));
         var _targetRot = Quaternion.Euler(20, 20, 20);
 
         while (timer < 1f)

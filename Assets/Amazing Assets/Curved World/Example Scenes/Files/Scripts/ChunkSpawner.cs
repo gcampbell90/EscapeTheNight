@@ -19,15 +19,13 @@ namespace AmazingAssets.CurvedWorld.Example
         public float movingSpeed = 1;
 
 
-        public float chunkSize = 60;        
+        public float chunkSize = 60;
         GameObject lastChunk;
-
-        //public Texture2D lightmapColor;
 
         void Awake()
         {
             initialSpawnCount = initialSpawnCount > chunks.Length ? initialSpawnCount : chunks.Length;
-            
+
             int chunkIndex = 0;
             for (int i = 0; i < initialSpawnCount; i++)
             {
@@ -35,7 +33,6 @@ namespace AmazingAssets.CurvedWorld.Example
                 chunk.SetActive(true);
 
                 chunk.GetComponent<RunnerChunk>().spawner = this;
-               
 
                 switch (axis)
                 {
@@ -59,18 +56,18 @@ namespace AmazingAssets.CurvedWorld.Example
                         moveDirection = new Vector3(0, 0, -1);
                         break;
                 }
-                
 
                 lastChunk = chunk;
 
                 if (++chunkIndex >= chunks.Length)
                     chunkIndex = 0;
-            }           
+            }
         }
-        
+
         public void DestroyChunk(RunnerChunk thisChunk)
         {
             Vector3 newPos = lastChunk.transform.position;
+
             switch (axis)
             {
                 case AXIS.XPositive:
@@ -86,10 +83,9 @@ namespace AmazingAssets.CurvedWorld.Example
                     newPos.z += chunkSize;
                     break;
             }
-           
+
             lastChunk = thisChunk.gameObject;
             lastChunk.transform.position = newPos;
-
         }
     }
 }

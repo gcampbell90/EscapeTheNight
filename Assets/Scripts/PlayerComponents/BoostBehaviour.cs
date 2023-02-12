@@ -69,7 +69,7 @@ public class BoostBehaviour : MonoBehaviour
         duration = 0.25f;
         progress = 0f;
 
-        while (progress <= 1f)
+        while (progress <= 0.5f)
         {
             transform.SetPositionAndRotation(
                 Vector3.Lerp(

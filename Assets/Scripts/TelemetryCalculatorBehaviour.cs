@@ -36,8 +36,7 @@ public class TelemetryCalculatorBehaviour : MonoBehaviour
 
         //Times
         timer = 0f;
-
-        eta = Distance / 100;
+        eta = Distance / Speed;
         goalTime = eta;
 
         etaSeconds = (int)((eta * 60) * 60);
@@ -64,13 +63,13 @@ public class TelemetryCalculatorBehaviour : MonoBehaviour
 
         progress = Mathf.Clamp01(progress);
 
-        UIController.onUIChange.Invoke(Speed, etaSeconds, goalTimeSeconds, progress);
+        UIController.onUIChange?.Invoke(Speed, etaSeconds, goalTimeSeconds, progress);
 
         if (goalTimeSeconds <= 0)
         {
             if (gameOver) return;
 
-            Debug.Log("Times Up");
+            //Debug.Log("Times Up");
             gameOver = true;
             onGameOver?.Invoke();
         }

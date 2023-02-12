@@ -13,7 +13,7 @@ public class ProjectileBehaviour : MonoBehaviour
         Explode();
         if(other.name == "Player")
         {
-            GameController.onSpeedChange(GameController.Instance.StandardSpeed_MPH/2);
+            GameController.onSpeedChange?.Invoke(GameController.Instance.StandardSpeed_MPH/2);
         }
     }
 
@@ -21,6 +21,7 @@ public class ProjectileBehaviour : MonoBehaviour
     {
         var explosion = Instantiate(explosionGO);
         explosion.transform.position = transform.position;
+        Destroy(explosion,1f);
     }
     public void ProjectileShoot()
     {

@@ -7,7 +7,6 @@ public class OutroTextBehaviour : ScrollingTextBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        Outro();
         if (GameController.Instance.isWinner)
         {
             WinText();
@@ -22,5 +21,10 @@ public class OutroTextBehaviour : ScrollingTextBehaviour
     {
         await SceneController.Instance.LoadSceneAsync("IntroScene");
         await SceneController.Instance.UnloadSceneAsync("OutroScene");
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

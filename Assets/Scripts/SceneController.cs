@@ -7,6 +7,8 @@ public class SceneController : MonoBehaviour
     private static SceneController _instance;
     public static SceneController Instance { get { return _instance; } }
 
+    bool isLoaded;
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -17,14 +19,13 @@ public class SceneController : MonoBehaviour
         {
             _instance = this;
         }
-
         DontDestroyOnLoad(gameObject);
     }
 
     void Update()
     {
         // Press the space key to start coroutine
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && isLoaded == false)
         {
             // Use a coroutine to load the Scene in the background
             LoadMainSceneAsync();
@@ -33,8 +34,16 @@ public class SceneController : MonoBehaviour
 
     public async Task LoadMainSceneAsync()
     {
+        isLoaded = true;
         await LoadSceneAsync("MainScene");
         await UnloadSceneAsync("IntroScene");
+    }
+    public async Task LoadOutroScene()
+    {
+        await LoadSceneAsync("OutroScene");
+        await UnloadSceneAsync("MainScene");
+        isLoaded = false;
+
     }
 
     public async Task LoadSceneAsync(string sceneName)
@@ -48,7 +57,6 @@ public class SceneController : MonoBehaviour
         }
         //Activate the Scene
         asyncLoad.allowSceneActivation = true;
-
 
         // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)

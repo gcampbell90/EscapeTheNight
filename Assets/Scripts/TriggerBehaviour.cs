@@ -2,7 +2,8 @@
 
 internal class TriggerBehaviour : MonoBehaviour, ITriggerBehaviour
 {
-    CarCollisionBehaviour CarCollision { get; set; }
+    CarCollisionBehaviour CarCollision;
+    
     public void SetEvent(CarCollisionBehaviour _carCollisionScript)
     {
         CarCollision = _carCollisionScript;
@@ -23,8 +24,8 @@ internal class TriggerBehaviour : MonoBehaviour, ITriggerBehaviour
         if (triggerCollider.gameObject.name == "Player")
         {
             //Debug.Log("Car Collision with "+ triggerCollider.name);
-            CarCollision.OnCollision?.Invoke();
-            EnemySpawnManager.onDroneCall.Invoke();
+            CarCollision.onCollision?.Invoke();
+            EnemySpawnManager.onDroneCall?.Invoke();
         }
         else
         {

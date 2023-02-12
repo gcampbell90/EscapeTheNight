@@ -74,7 +74,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (isDestroyed != true)
         {
-            Debug.Log($"{gameObject.name} was hit by a Ray");
+            //Debug.Log($"{gameObject.name} was hit by a Ray");
             TakeDamage();
         }
         else
@@ -100,15 +100,10 @@ public class EnemyBehaviour : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("Enemy Hit OnCollision");
-    }
-
     private void OnDestroy()
     {
         StopAllCoroutines();
         EnemySpawnManager.onDroneDestroyed?.Invoke();
-        Debug.Log("Enemy Destroyed");
+        //Debug.Log("Enemy Destroyed");
     }
 }
