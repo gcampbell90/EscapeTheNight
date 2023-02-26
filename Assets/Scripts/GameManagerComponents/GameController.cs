@@ -30,7 +30,7 @@ public class GameController : MonoBehaviour
 
     //environment chunks
     [SerializeField] private ChunkSpawner[] environmentSpawners;
-    [SerializeField] private ChunkSpawner[] carSpawners;
+    [SerializeField] private CarChunkSpawner[] carSpawners;
 
     public float LevelLength_Miles { get => levelLength_Miles; private set => levelLength_Miles = value; }
 
@@ -91,6 +91,7 @@ public class GameController : MonoBehaviour
         SpeedUpdateEvent(StandardSpeed_MPH);
     }
 
+
     private void SpawnEndWall()
     {
         var gateSpawnPos = new Vector3(0, 0, LevelLength_Miles * 1609.34f);
@@ -113,11 +114,32 @@ public class GameController : MonoBehaviour
         {
             chunk.movingSpeed = (newSpeed * 0.44704f);
         }
+        //28.2f added to account for cars already moving at 60mph anyway
         foreach (var chunk in carSpawners)
         {
-            chunk.movingSpeed = (newSpeed * 0.44704f) + 28.82f;
+            chunk.movingSpeed = (newSpeed * 0.44704f) + 28.2f;
+        }
+
+        UIController.onUiStateChange(GetUIState(newSpeed));
+
+    }
+
+    private UIController.UIState GetUIState(float speed)
+    {
+        if (speed == standardSpeed_MPH)
+        {
+            return UIController.UIState.Normal;
+        }
+        else if (speed == boostSpeed_MPH)
+        {
+            return UIController.UIState.Boost;
+        }
+        else
+        {
+            return UIController.UIState.Penalty;
         }
     }
+
     //private IEnumerator SpeedUpdate(float newSpeed)
     //{
     //    var _t = 0f;

@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 
 namespace AmazingAssets.CurvedWorld.Example
 {
-    public class ChunkSpawner : MonoBehaviour
+    public class CarChunkSpawner : MonoBehaviour
     {
         public enum AXIS { XPositive, XNegative, ZPositive, ZNegative }
 
@@ -32,7 +32,7 @@ namespace AmazingAssets.CurvedWorld.Example
                 GameObject chunk = (GameObject)Instantiate(chunks[chunkIndex]);
                 chunk.SetActive(true);
 
-                chunk.GetComponent<RunnerChunk>().spawner = this;
+                chunk.GetComponent<CarPositionChanger>().spawner = this;
 
                 switch (axis)
                 {
@@ -65,8 +65,9 @@ namespace AmazingAssets.CurvedWorld.Example
 
         }
 
-        public void DestroyChunk(RunnerChunk thisChunk)
+        public void DestroyChunk(CarPositionChanger thisChunk)
         {
+            //Debug.Log("Destroy Car Chunk Call");
             Vector3 newPos = lastChunk.transform.position;
 
             switch (axis)
@@ -87,6 +88,7 @@ namespace AmazingAssets.CurvedWorld.Example
 
             lastChunk = thisChunk.gameObject;
             lastChunk.transform.position = newPos;
+
         }
     }
 }

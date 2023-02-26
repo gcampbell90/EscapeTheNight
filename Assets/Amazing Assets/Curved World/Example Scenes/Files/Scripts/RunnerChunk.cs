@@ -7,13 +7,14 @@ namespace AmazingAssets.CurvedWorld.Example
     {
         public ChunkSpawner spawner;
 
-        void Update()
+        public void Update()
         {
             transform.Translate(spawner.moveDirection * spawner.movingSpeed * Time.deltaTime);
         }
 
         void FixedUpdate()
         {
+
             switch (spawner.axis)
             {
                 case ChunkSpawner.AXIS.XPositive:

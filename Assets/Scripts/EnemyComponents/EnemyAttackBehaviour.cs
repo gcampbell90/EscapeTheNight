@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyAttackBehaviour : MonoBehaviour
 {
-    public float fireRate;
+    private float fireRate;
     public float fireRange;
     private float fireTimer;
 
@@ -14,7 +14,7 @@ public class EnemyAttackBehaviour : MonoBehaviour
     void Start()
     {
         fireTimer = 0f;
-        fireRate = Random.Range(1.0f, 2.0f);
+        fireRate = Random.Range(2.0f, 5.0f);
     }
 
     void Update()

@@ -8,10 +8,10 @@ public class ProjectileBehaviour : MonoBehaviour
     [SerializeField] GameObject explosionGO;
     public Transform Target { get; internal set; }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider collider)
     {
         Explode();
-        if(other.name == "Player")
+        if(collider.name == "Player")
         {
             GameController.onSpeedChange?.Invoke(GameController.Instance.StandardSpeed_MPH/2);
         }

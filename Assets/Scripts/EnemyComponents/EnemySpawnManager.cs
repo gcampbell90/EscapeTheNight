@@ -31,8 +31,6 @@ public class EnemySpawnManager : MonoBehaviour
     private void Start()
     {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-
-
     }
 
     private void ConfirmDronesPresent()
@@ -49,11 +47,19 @@ public class EnemySpawnManager : MonoBehaviour
     private void UpdateDroneCount()
     {
         spawnedEnemyCount--;
+
+        if (spawnedEnemyCount == 0)
+        {
+            UIController.onDroneAlert?.Invoke(false);
+            Debug.Log("onDroneAlert false");
+        }
     }
 
-    // Start is called before the first frame update
-    void SpawnEnemies()
+    private void SpawnEnemies()
     {
+        //Event called to let UI know drones are about to attack
+        UIController.onDroneAlert?.Invoke(true);
+
         spawnedEnemyCount = spawnCount;
         int m_yPos;
         Vector3 m_position = new Vector3();

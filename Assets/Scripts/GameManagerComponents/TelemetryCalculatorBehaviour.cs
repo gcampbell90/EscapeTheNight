@@ -76,6 +76,5 @@ public class TelemetryCalculatorBehaviour : MonoBehaviour
 
         timer += Time.deltaTime;
         //Debug.Log("Eta: " + etaSeconds + " " + "GoalTime: " + " " + goalTimeSeconds + " " + Instance.GoalTimePercentage + "%");
-
     }
 }

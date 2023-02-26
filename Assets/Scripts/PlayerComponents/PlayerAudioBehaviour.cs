@@ -13,6 +13,7 @@ public class PlayerAudioBehaviour : MonoBehaviour
     AudioClip[] tireScreeching;
 
     AudioSource audioSource;
+    AudioSource oneShot;
 
     private void Awake()
     {
@@ -46,7 +47,7 @@ public class PlayerAudioBehaviour : MonoBehaviour
             StartCoroutine(JetEndingClip());
         }
     }
-    AudioSource oneShot;
+
     public void PlayTireScreech()
     {
         if (oneShot == null) {

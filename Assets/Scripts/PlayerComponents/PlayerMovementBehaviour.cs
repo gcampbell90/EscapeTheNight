@@ -27,12 +27,12 @@ public class PlayerMovementBehaviour : MonoBehaviour
 
     private void OnEnable()
     {
-        onPlayerHit += ResetPos;
+        onPlayerHit += HitPenalty;
     }
 
     private void OnDisable()
     {
-        onPlayerHit -= ResetPos;    
+        onPlayerHit -= HitPenalty;    
     }
 
     private void Start()
@@ -85,23 +85,23 @@ public class PlayerMovementBehaviour : MonoBehaviour
         //boost
         if (Input.GetKeyDown(KeyCode.W))
         {
-            BoostBehaviour.boostEvent(true);
+            BoostBehaviour.boostEvent?.Invoke(true);
         }
         else if (Input.GetKeyUp(KeyCode.W))
         {
-            BoostBehaviour.boostEvent(false);
+            BoostBehaviour.boostEvent?.Invoke(false);
         }
 
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, laneChangeSpeed * Time.deltaTime);
 
     }
 
-    public void ResetPos()
+    public void HitPenalty()
     {
         targetPosition = middlePosition;
         currLanePosition = CurrentPos.middle;
+        GameController.onSpeedChange?.Invoke(GameController.Instance.PenaltySpeed);
     }
-
 
     Vector3 SetTargetPosition()
     {
@@ -112,11 +112,5 @@ public class PlayerMovementBehaviour : MonoBehaviour
     {
         rot = dir ? -25 : 25;
         return Quaternion.Euler(0, rot, 0);
-    }
-
-    private void PlayerTurnSFX()
-    {
-        var audioController = GetComponent<PlayerAudioBehaviour>();
-        audioController.PlayTireScreech();
     }
 }
