@@ -64,7 +64,7 @@ public class TelemetryCalculatorBehaviour : MonoBehaviour
         progress = Mathf.Clamp01(progress);
 
         UIController.onUIChange?.Invoke(Speed, etaSeconds, goalTimeSeconds, progress);
-
+        
         if (goalTimeSeconds <= 0)
         {
             if (gameOver) return;

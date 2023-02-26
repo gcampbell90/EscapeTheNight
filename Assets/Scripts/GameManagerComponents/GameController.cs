@@ -91,7 +91,6 @@ public class GameController : MonoBehaviour
         SpeedUpdateEvent(StandardSpeed_MPH);
     }
 
-
     private void SpawnEndWall()
     {
         var gateSpawnPos = new Vector3(0, 0, LevelLength_Miles * 1609.34f);
@@ -120,7 +119,7 @@ public class GameController : MonoBehaviour
             chunk.movingSpeed = (newSpeed * 0.44704f) + 28.2f;
         }
 
-        UIController.onUiStateChange(GetUIState(newSpeed));
+        UIController.onUiStateChange?.Invoke(GetUIState(newSpeed));
 
     }
 
@@ -140,32 +139,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-    //private IEnumerator SpeedUpdate(float newSpeed)
-    //{
-    //    var _t = 0f;
-    //    var _dur = 1f;
-    //    GateBehaviour gateScript = gateGO.GetComponent<GateBehaviour>();
-    //    while (_t < 1f)
-    //    {
-    //        TelemetryTracker.Speed = newSpeed;
-
-    //        gateScript.MoveSpeed = (newSpeed * 0.44704f);
-
-    //        //foreach (var chunk in carSpawners)
-    //        //{
-    //        //    chunk.movingSpeed = (newSpeed * 0.44704f) + 28.82f;
-    //        //}
-
-    //        foreach (var chunk in environmentSpawners)
-    //        {
-    //            chunk.movingSpeed = (newSpeed * 0.44704f);
-    //        }
-
-    //        _t += Time.deltaTime / _dur;
-
-    //        yield return null;
-    //    }
-    //}
     private void GameOverEvent()
     {
         //Debug.Log("GameOver event");

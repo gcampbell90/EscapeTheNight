@@ -10,6 +10,7 @@ public class UIController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _etaInfoText;
     [SerializeField] private TextMeshProUGUI _goalTimeText;
+    [SerializeField] private TextMeshProUGUI _plusminusTimeText;
     private GameObject _speedDial;
     [SerializeField]private Image _speedDialImage;
     [SerializeField]private Image _alertDialImage;
@@ -68,6 +69,8 @@ public class UIController : MonoBehaviour
         _goalTimeText.text = $"{goalTime}";
         _speedDialText.text = $"{speed}";
         _progressSlider.value = progress;
+
+        _plusminusTimeText.text = $"{-(time - goalTime)}";
     }
 
     private void UpdateBoostBar(float fuel)
