@@ -4,20 +4,14 @@ using UnityEngine;
 
 public class PlayerMovementBehaviour : MonoBehaviour
 {
-    //Movement
-    bool dir;
-    float rot;
-    float pos;
     Vector3 targetPosition;
 
-    private Vector3 middlePosition = new Vector3(0, 0, 0);
-    private Vector3 leftPosition = new Vector3(-5, 0, 0);
-    private Vector3 rightPosition = new Vector3(5, 0, 0);
+    private Vector3 middlePosition = new Vector3(0, 0.5f, 0);
+    private Vector3 leftPosition = new Vector3(-5, 0.5f, 0);
+    private Vector3 rightPosition = new Vector3(5, 0.5f, 0);
 
     private enum CurrentPos { middle, left, right };
     private CurrentPos currLanePosition;
-    public Vector3 TartgetPos => SetTargetPosition();
-    public Quaternion TargetRot => SetTargetRotation();
 
     [SerializeField] private float laneChangeSpeed;
 
@@ -38,11 +32,14 @@ public class PlayerMovementBehaviour : MonoBehaviour
     private void Start()
     {
         currLanePosition = CurrentPos.middle;
+        targetPosition = middlePosition;
     }
+
     private void Update()
     {
         HandleInput();
     }
+
     private void HandleInput()
     {
 
@@ -101,16 +98,5 @@ public class PlayerMovementBehaviour : MonoBehaviour
         targetPosition = middlePosition;
         currLanePosition = CurrentPos.middle;
         GameController.onSpeedChange?.Invoke(GameController.Instance.PenaltySpeed);
-    }
-
-    Vector3 SetTargetPosition()
-    {
-        pos = dir ? -4 : 4;
-        return new Vector3(pos, 0, 0);
-    }
-    Quaternion SetTargetRotation()
-    {
-        rot = dir ? -25 : 25;
-        return Quaternion.Euler(0, rot, 0);
     }
 }

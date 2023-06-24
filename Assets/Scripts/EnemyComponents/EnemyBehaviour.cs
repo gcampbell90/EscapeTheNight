@@ -8,7 +8,6 @@ using Random = UnityEngine.Random;
 public class EnemyBehaviour : MonoBehaviour
 {
     private int health = 10;
-    private bool isAnimated = false;
     public Vector3 TargetPos { get; set; }
     public Transform PlayerTransform { get; set; }
 
@@ -16,18 +15,13 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] AudioSource explosionSound;
 
     private bool isDestroyed = false;
-
     private void Start()
     {
         StartCoroutine(MoveToTarget());
         StartCoroutine(LookAtTarget());
     }
 
-    public void Animate()
-    {
-        isAnimated = true;
-        StartCoroutine(FloatAround());
-    }
+
     private IEnumerator LookAtTarget()
     {
         while (true)
@@ -38,39 +32,49 @@ public class EnemyBehaviour : MonoBehaviour
     }
     private IEnumerator MoveToTarget()
     {
-        float timer = 0;
-        float duration = 2f;
-        Vector3 SpawnPos = new Vector3(0, Random.Range(20f, 30f), Random.Range(30f, 50f));
-        while (timer < 1)
+        float m_timer = 0f;
+        float m_duration = Random.Range(5, 16);
+        var m_pos = transform.position;
+
+        while (m_timer < m_duration)
         {
-            transform.position = Vector3.Slerp(SpawnPos, TargetPos, timer);
-            timer += Time.deltaTime / duration;
+            Debug.Log("Moving drones" + m_timer);
+            transform.position = Vector3.Lerp(m_pos, TargetPos, m_timer/m_duration);
+
+            m_timer += Time.deltaTime;
             yield return null;
         }
         Animate();
     }
     private IEnumerator FloatAround()
     {
-        float m_timer = 0f;
-        float m_duration = 1f;
+        float m_timer;
         Vector3 m_offset;
 
         while (true)
         {
+            m_timer = 0f;
+
+            float m_duration = Random.Range(1,3);
+
             m_offset = new Vector3(Random.Range(-12f, 12f), Random.Range(5, 11f), Random.Range(20f, 40f));
             var m_pos = transform.position;
             while (m_timer < m_duration)
             {
-                transform.position = Vector3.Lerp(m_pos, m_offset, m_timer);
-                m_timer += Time.deltaTime / m_duration;
+                transform.position = Vector3.Lerp(m_pos, m_offset, m_timer / m_duration);
+                m_timer += Time.deltaTime;
                 yield return null;
             }
-            m_timer = 0f;
             yield return null;
         }
     }
 
-    void HitByRay()
+    private void Animate()
+    {
+        StartCoroutine(FloatAround());
+    }
+
+    private void HitByRay()
     {
         if (isDestroyed != true)
         {
@@ -82,7 +86,6 @@ public class EnemyBehaviour : MonoBehaviour
             return;
         }
     }
-
     private void TakeDamage()
     {
         health -= 1;

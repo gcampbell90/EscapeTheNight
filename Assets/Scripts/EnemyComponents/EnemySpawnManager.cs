@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemySpawnManager : MonoBehaviour
 {
@@ -61,7 +62,6 @@ public class EnemySpawnManager : MonoBehaviour
         UIController.onDroneAlert?.Invoke(true);
 
         spawnedEnemyCount = spawnCount;
-        int m_yPos;
         Vector3 m_position = new Vector3();
 
         float m_offset = spawnCount / 2;
@@ -69,12 +69,13 @@ public class EnemySpawnManager : MonoBehaviour
 
         for (int x = 0; x < spawnCount; x++)
         {
-            m_yPos = 7;
             m_position.x = (x - m_offset) * m_spacing;
-            m_position.y = m_yPos;
-            m_position.z = 40;
+            m_position.y = Random.Range(7, 10);
+            m_position.z = Random.Range(35,55);
 
-            var m_enemy = Instantiate(enemy);
+            Vector3 SpawnPos = new Vector3(Random.Range(-30f, 30f), Random.Range(10f, 20f), Random.Range(-100f, -150f));
+
+            var m_enemy = Instantiate(enemy, SpawnPos, Quaternion.identity);
             m_enemy.GetComponent<EnemyBehaviour>().TargetPos = m_position;
             m_enemy.GetComponent<EnemyBehaviour>().PlayerTransform = playerTransform;
             m_enemy.GetComponent<EnemyAttackBehaviour>().PlayerTransform = playerTransform;

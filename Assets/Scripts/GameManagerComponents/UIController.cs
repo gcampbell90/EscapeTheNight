@@ -12,8 +12,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _goalTimeText;
     [SerializeField] private TextMeshProUGUI _plusminusTimeText;
     private GameObject _speedDial;
-    [SerializeField]private Image _speedDialImage;
-    [SerializeField]private Image _alertDialImage;
+    [SerializeField] private Image _speedDialImage;
+    [SerializeField] private Image _alertDialImage;
     [SerializeField] private TextMeshProUGUI _speedDialText;
 
     [SerializeField] private Slider _progressSlider;
@@ -60,6 +60,7 @@ public class UIController : MonoBehaviour
         UpdateSpeedDialGraphic(_uiState);
     }
 
+    float _timeDiff;
     private void UpdateUI(float speed, float etaSecs, float goaltime, float progress)
     {
         TimeSpan time = TimeSpan.FromSeconds(etaSecs);
@@ -70,7 +71,27 @@ public class UIController : MonoBehaviour
         _speedDialText.text = $"{speed}";
         _progressSlider.value = progress;
 
-        _plusminusTimeText.text = $"{-(time - goalTime)}";
+        var _timeDiff = time - goalTime;
+        var m_info = "";
+
+        if (_timeDiff > TimeSpan.Zero)
+        {
+            if (m_info != "Behind")
+            {
+                m_info = "Behind";
+                _plusminusTimeText.color = Color.red;
+            }
+        }
+        else
+        {
+            if (m_info != "Ahead")
+            {
+                m_info = "Ahead";
+
+                _plusminusTimeText.color = Color.green;
+            }
+        }
+        _plusminusTimeText.text = $"{m_info} {-(time - goalTime)}";
     }
 
     private void UpdateBoostBar(float fuel)

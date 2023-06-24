@@ -44,6 +44,7 @@ public class BoostBehaviour : MonoBehaviour
 
         var originPos = transform.position;
         var targetPos = originPos + new Vector3(0, 0, boostPos);
+        var originRot = Quaternion.Euler(-90, 0, 0);
 
         var jetMat = transform.GetChild(0).GetComponent<Renderer>().material;
 
@@ -58,7 +59,7 @@ public class BoostBehaviour : MonoBehaviour
                 progress),
             Quaternion.Slerp(
                 transform.rotation,
-                Quaternion.identity,
+                originRot,
                 progress));
 
             jetMat.SetFloat("_BoostPower", Mathf.Lerp(0, 5, progress));
@@ -66,6 +67,7 @@ public class BoostBehaviour : MonoBehaviour
             progress += Time.deltaTime / duration;
             yield return null;
         }
+
         duration = 0.25f;
         progress = 0f;
 
@@ -78,7 +80,7 @@ public class BoostBehaviour : MonoBehaviour
                     progress),
                 Quaternion.Slerp(
                     transform.rotation,
-                    Quaternion.identity,
+                    originRot,
                     progress));
 
             jetMat.SetFloat("_BoostPower", Mathf.Lerp(jetMat.GetFloat("_BoostPower"), 0, progress));
