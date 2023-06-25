@@ -21,9 +21,9 @@ internal class TriggerBehaviour : MonoBehaviour, ITriggerBehaviour
         //Im doing stupid things and forgot how events work and this is a mad workaround so I can put the car collision script
         //on the parent but can send the trigger event to the parent script...
         //
-        if (triggerCollider.gameObject.name == "Player")
+        if (triggerCollider.gameObject.tag == "Player")
         {
-            //Debug.Log("Car Collision with "+ triggerCollider.name);
+            Debug.Log("Car Collision with " + triggerCollider.name);
             CarCollision.onCollision?.Invoke();
             EnemySpawnManager.onDroneCall?.Invoke();
         }

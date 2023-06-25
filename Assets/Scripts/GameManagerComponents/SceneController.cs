@@ -32,6 +32,16 @@ public class SceneController : MonoBehaviour
         }
     }
 
+    public void LoadIntroScene()
+    {
+        LoadIntroSceneAsync();
+    }
+
+    public async Task LoadIntroSceneAsync()
+    {
+        await LoadSceneAsync("IntroScene");
+        await UnloadSceneAsync("MenuScene");
+    }
     public async Task LoadMainSceneAsync()
     {
         isLoaded = true;
@@ -43,14 +53,13 @@ public class SceneController : MonoBehaviour
         await LoadSceneAsync("OutroScene");
         await UnloadSceneAsync("MainScene");
         isLoaded = false;
-
     }
 
     public async Task LoadSceneAsync(string sceneName)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
-        while(asyncLoad.progress < 0.9f)
+        while (asyncLoad.progress < 0.9f)
         {
             //Debug.Log(asyncLoad.progress);
             await Task.Yield();

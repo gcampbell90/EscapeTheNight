@@ -117,7 +117,7 @@ public class BoostBehaviour : MonoBehaviour
     {
         while (IsBoosting && fuel > 0)
         {
-            fuel -= Time.deltaTime * 10;
+            fuel -= Time.deltaTime * 20;
             UIController.onBoostChange?.Invoke(fuel);
             yield return null;
         }
